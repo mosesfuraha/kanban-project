@@ -1,1 +1,9 @@
-<router-outlet></router-outlet>
+<div class="flex h-screen">
+  <app-side-bar class="w-1/5 bg-light-white text-white"></app-side-bar>
+  <div class="flex-1 flex flex-col bg-gray-100">
+    <app-nav-bar class="w-full"></app-nav-bar>
+    <div class="flex flex-1 items-center justify-center bg-light-background">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
