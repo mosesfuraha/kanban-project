@@ -1,85 +1,202 @@
-<section class="relative h-screen flex flex-col justify-between">
-  <div>
-    <div class="flex items-center mb-8 ml-7 mt-7">
-      <img src="assets/kanban.png" alt="Kanban Logo" class="w-7 h-7 mr-2" />
-      <h2 class="text-dark-background text-2xl font-bold">kanBan</h2>
-    </div>
-    <p class="text-dark-text text-sm font-medium mb-5 ml-7">ALL BOARDS (3)</p>
+<section
+  class="relative h-screen flex flex-col justify-between font-sans"
+  [ngClass]="{
+    'bg-dark-secondary': (isDarkMode$ | async),
+    'bg-light-white': !(isDarkMode$ | async)
+  }"
+>
+  <div class="flex items-center ml-7 mt-7">
+    <img src="assets/kanban.png" alt="Kanban Logo" class="w-7 h-7 mr-2" />
+    <h2
+      class="text-2xl font-bold"
+      [ngClass]="{
+        'text-dark-secondary': !(isDarkMode$ | async),
+        'text-light-white': (isDarkMode$ | async)
+      }"
+    >
+      KanBan
+    </h2>
+  </div>
+
+  <div *ngIf="!isSidebarCollapsed" class="ml-7">
+    <p
+      class="text-sm font-medium mb-3"
+      [ngClass]="{
+        'text-[#828FA3]': (isDarkMode$ | async),
+        'text-dark-text': !(isDarkMode$ | async)
+      }"
+    >
+      ALL BOARDS (3)
+    </p>
     <div
-      class="flex items-center mb-3 hover:bg-[#E4EBFA] cursor-pointer w-[90%] p-3 rounded-tr-full rounded-br-full"
-      [ngClass]="{ 'bg-[#635FC7]': isActive('Platform Launch') }"
+      class="flex items-center cursor-pointer w-[90%] p-3 rounded-tr-full rounded-br-full"
+      [ngClass]="{
+        'bg-dark-primary': isActive('Platform Launch') && (isDarkMode$ | async),
+        'bg-light-primary':
+          isActive('Platform Launch') && !(isDarkMode$ | async),
+        'hover:bg-light-text': !(isDarkMode$ | async),
+        'hover:bg-dark-tertiary': (isDarkMode$ | async)
+      }"
     >
       <img
         src="assets/icon-board.svg"
         alt="Board Icon"
         class="w-6 h-6 mr-3 ml-4"
       />
-      <p class="text-white text-sm font-medium">Platform Launch</p>
+      <p
+        class="text-sm font-medium"
+        [ngClass]="{
+          'text-light-white': !(isDarkMode$ | async),
+          'text-light-background':
+            isActive('Platform Launch') && (isDarkMode$ | async),
+          'text-dark-background': !(isDarkMode$ | async)
+        }"
+      >
+        Platform Launch
+      </p>
     </div>
 
     <div
-      class="slider-items flex items-center mb-3 bg-transparent hover:bg-[#E4EBFA] cursor-pointer w-[90%] p-3 rounded-tr-full rounded-br-full"
+      class="slider-items flex items-center cursor-pointer w-[90%] p-3 rounded-tr-full rounded-br-full"
+      [ngClass]="{
+        'bg-transparent': true,
+        'hover:bg-light-text': !(isDarkMode$ | async),
+        'hover:bg-dark-tertiary': (isDarkMode$ | async)
+      }"
     >
       <img
         src="assets/icon-board.svg"
         alt="Board Icon"
         class="w-6 h-6 mr-3 ml-4"
       />
-      <p class="text-gray-800 text-sm font-medium">Marketing Plan</p>
-    </div>
-    <div
-      class="slider-items flex items-center mb-3 bg-transparent hover:bg-[#E4EBFA] cursor-pointer w-[90%] p-3 rounded-tr-full rounded-br-full"
-    >
-      <img
-        src="assets/icon-board.svg"
-        alt="Board Icon"
-        class="w-6 h-6 mr-3 ml-4"
-      />
-      <p class="text-gray-800 text-sm font-medium">RoadMap</p>
+      <p
+        class="text-sm font-medium"
+        [ngClass]="{
+          'text-dark-text': (isDarkMode$ | async),
+          'text-gray-800': !(isDarkMode$ | async)
+        }"
+      >
+        Marketing Plan
+      </p>
     </div>
 
     <div
-      class="slider-items flex items-center hover:bg-[#E4EBFA] cursor-pointer w-[90%] p-3 rounded-tr-full rounded-br-full"
+      class="slider-items flex items-center cursor-pointer w-[90%] p-3 rounded-tr-full rounded-br-full"
+      [ngClass]="{
+        'bg-transparent': true,
+        'hover:bg-light-text': !(isDarkMode$ | async),
+        'hover:bg-dark-tertiary': (isDarkMode$ | async)
+      }"
     >
       <img
         src="assets/icon-board.svg"
         alt="Board Icon"
         class="w-6 h-6 mr-3 ml-4"
       />
-      <p class="text-gray-800 text-sm font-medium">Create New Board</p>
+      <p
+        class="text-sm font-medium"
+        [ngClass]="{
+          'text-dark-text': (isDarkMode$ | async),
+          'text-gray-800': !(isDarkMode$ | async)
+        }"
+      >
+        RoadMap
+      </p>
+    </div>
+
+    <div
+      class="slider-items flex items-center cursor-pointer w-[90%] p-3 rounded-tr-full rounded-br-full mb-10"
+      [ngClass]="{
+        'bg-transparent': true,
+        'hover:bg-light-text': !(isDarkMode$ | async),
+        'hover:bg-dark-tertiary': (isDarkMode$ | async)
+      }"
+    >
+      <img
+        src="assets/icon-board.svg"
+        alt="Board Icon"
+        class="w-6 h-6 mr-3 ml-4"
+      />
+      <p
+        class="text-sm font-medium"
+        [ngClass]="{
+          'text-dark-text': (isDarkMode$ | async),
+          'text-gray-800': !(isDarkMode$ | async)
+        }"
+      >
+        Create New Board
+      </p>
     </div>
   </div>
 
-  <div class="flex flex-col items-center">
+  <div *ngIf="!isSidebarCollapsed" class="flex flex-col items-center">
     <div
-      class="flex items-center justify-center mb-4 p-3 rounded-lg bg-[#F4F7FD] w-[85%]"
+      class="flex items-center justify-center p-2 rounded-lg w-[85%] space-x-4"
+      [ngClass]="{
+        'bg-light-background': !(isDarkMode$ | async),
+        'bg-dark-tertiary': (isDarkMode$ | async)
+      }"
     >
       <img
         src="assets/icon-light-theme.svg"
         alt="Light Theme Icon"
-        class="w-5 h-5 mx-2"
+        class="w-5 h-5"
       />
-      <img
-        src="assets/toggle.svg"
-        alt="Toggle Theme"
-        class="w-10 h-5 mx-2 cursor-pointer"
-      />
+      <div
+        class="relative w-12 h-6 rounded-full cursor-pointer"
+        (click)="toggleTheme()"
+        [ngClass]="{
+          'bg-dark-primary': !(isDarkMode$ | async),
+          'bg-[#635FC7]': (isDarkMode$ | async)
+        }"
+      >
+        <div
+          class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform"
+          [ngClass]="{
+            'transform translate-x-6': (isDarkMode$ | async),
+            'transform translate-x-0': !(isDarkMode$ | async)
+          }"
+        ></div>
+      </div>
       <img
         src="assets/icon-dark-theme.svg"
         alt="Dark Theme Icon"
-        class="w-5 h-5 mx-2"
+        class="w-5 h-5"
       />
     </div>
+  </div>
 
-    <div
-      class="flex items-center bg-transparent hover:bg-[#E4EBFA] cursor-pointer w-[90%] p-3 rounded-tr-full rounded-br-full"
+  <div class="flex flex-col items-center">
+    <button
+      class="flex items-center justify-center cursor-pointer w-[90%] p-3 rounded-tr-full rounded-br-full transition-all duration-300 ease-in-out"
+      [ngClass]="{
+        'bg-transparent hover:bg-light-white': !isSidebarCollapsed,
+        'bg-dark-primary': isSidebarCollapsed
+      }"
+      (click)="toggleSidebar()"
     >
       <img
+        *ngIf="!isSidebarCollapsed"
         src="assets/icon-hide-sidebar.svg"
         alt="Hide Sidebar Icon"
         class="w-5 h-5 mr-2"
       />
-      <p class="text-dark-secondary text-lg font-semibold">Hide Sidebar</p>
-    </div>
+      <img
+        *ngIf="isSidebarCollapsed"
+        src="assets/icon-show-sidebar.svg"
+        alt="Show Sidebar Icon"
+        class="w-5 h-5 mr-2"
+      />
+      <p
+        *ngIf="!isSidebarCollapsed"
+        class="text-lg font-semibold"
+        [ngClass]="{
+          'text-dark-text': (isDarkMode$ | async),
+          'text-light-primary': !(isDarkMode$ | async)
+        }"
+      >
+        Hide Sidebar
+      </p>
+    </button>
   </div>
 </section>
