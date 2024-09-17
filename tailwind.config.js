@@ -32,8 +32,6 @@ module.exports = {
         ".no-scrollbar": {
           overflow: "auto",
           "&::-webkit-scrollbar": { display: "none" },
-          "-ms-overflow-style": "none",
-          "scrollbar-width": "none", 
         },
       });
     },

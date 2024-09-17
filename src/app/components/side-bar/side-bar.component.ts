@@ -25,9 +25,13 @@ export class SideBarComponent {
   setActive(item: string) {
     this.activeItem = item;
   }
-
   toggleSidebar() {
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
+
+    document.body.classList.toggle(
+      'sidebar-collapsed',
+      this.isSidebarCollapsed
+    );
   }
 
   toggleTheme() {

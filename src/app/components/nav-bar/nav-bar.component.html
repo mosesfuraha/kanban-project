@@ -2,7 +2,7 @@
   class="p-5 font-sans"
   [ngClass]="{
     'bg-light-white text-gray-800': !(isDarkMode$ | async),
-    'bg-dark-secondary text-light-primary': (isDarkMode$ | async)
+    'bg-dark-tertiary text-light-primary': (isDarkMode$ | async)
   }"
 >
   <div class="flex items-center justify-between">
@@ -50,7 +50,7 @@
 
         <div
           *ngIf="isModalOpen"
-          class="absolute right-0 mt-6 p-3 rounded-lg shadow-xl mt-6 w-40"
+          class="absolute right-0 mt-6 p-3 rounded shadow-xl mt-6 w-40"
           [ngClass]="{
             'bg-light-white text-gray-800': !(isDarkMode$ | async),
             'bg-dark-secondary text-light-primary shadow-md':

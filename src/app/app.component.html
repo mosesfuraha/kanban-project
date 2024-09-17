@@ -1,21 +1,26 @@
 <div
   class="flex h-screen font-sans"
   [ngClass]="{
-    'bg-dark-primary text-dark-text': (isDarkMode$ | async),
+    'bg-dark-secondary text-dark-text': (isDarkMode$ | async),
     'bg-light-background text-gray-800': !(isDarkMode$ | async)
   }"
 >
   <app-side-bar
-    class="w-1/5 hidden lg:block fixed top-0 left-0 h-full"
+    class="fixed top-0 left-0 h-full transition-transform duration-300 lg:w-1/5 md:w-1/4 sm:w-full"
     [ngClass]="{
       'bg-dark-secondary text-dark-text': (isDarkMode$ | async),
-      'bg-light-white text-white': !(isDarkMode$ | async)
+      'bg-light-white text-white': !(isDarkMode$ | async),
+      'translate-x-0': isSidebarVisible,
+      '-translate-x-full md:translate-x-0': !isSidebarVisible
     }"
   ></app-side-bar>
 
-  <div class="flex-1 flex flex-col" style="margin-left: 20%">
+  <div
+    class="flex-1 flex flex-col"
+    [ngStyle]="{ 'margin-left': isSidebarVisible ? '20%' : '0' }"
+  >
     <app-nav-bar
-      class="w-full fixed top-0 left-0 lg:left-[20%] z-10"
+      class="lg:w-[80%]  md:w-full fixed top-0 z-10"
       [ngClass]="{
         'bg-dark-tertiary text-dark-text': (isDarkMode$ | async),
         'bg-light-background text-gray-800': !(isDarkMode$ | async)
@@ -25,7 +30,7 @@
     <div
       class="flex-1 no-scrollbar pt-24"
       [ngClass]="{
-        'bg-dark-tertiary text-dark-text': (isDarkMode$ | async),
+        'bg-dark-secondary text-dark-text': (isDarkMode$ | async),
         'bg-light-background text-gray-800': !(isDarkMode$ | async)
       }"
     >
