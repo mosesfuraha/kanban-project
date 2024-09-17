@@ -6,16 +6,16 @@
   }"
 >
   <app-side-bar
-    class="w-1/5 hidden lg:block"
+    class="w-1/5 hidden lg:block fixed top-0 left-0 h-full"
     [ngClass]="{
       'bg-dark-secondary text-dark-text': (isDarkMode$ | async),
       'bg-light-white text-white': !(isDarkMode$ | async)
     }"
   ></app-side-bar>
 
-  <div class="flex-1 flex flex-col">
+  <div class="flex-1 flex flex-col" style="margin-left: 20%">
     <app-nav-bar
-      class="w-full"
+      class="w-full fixed top-0 left-0 lg:left-[20%] z-10"
       [ngClass]="{
         'bg-dark-tertiary text-dark-text': (isDarkMode$ | async),
         'bg-light-background text-gray-800': !(isDarkMode$ | async)
@@ -23,13 +23,15 @@
     ></app-nav-bar>
 
     <div
-      class="flex flex-1 items-center justify-center"
+      class="flex-1 no-scrollbar pt-24"
       [ngClass]="{
         'bg-dark-tertiary text-dark-text': (isDarkMode$ | async),
         'bg-light-background text-gray-800': !(isDarkMode$ | async)
       }"
     >
-      <router-outlet></router-outlet>
+      <div class="min-w-full">
+        <router-outlet></router-outlet>
+      </div>
     </div>
   </div>
 </div>
