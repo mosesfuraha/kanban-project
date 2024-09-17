@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { toggleTheme } from './../../theme/theme.actions';
@@ -14,6 +14,8 @@ export class SideBarComponent {
   isSidebarCollapsed = false;
   isDarkMode$: Observable<boolean>;
 
+  @Output() sidebarToggled = new EventEmitter<boolean>();
+
   constructor(private store: Store<{ theme: ThemeState }>) {
     this.isDarkMode$ = this.store.select((state) => state.theme.isDarkMode);
   }
@@ -25,13 +27,10 @@ export class SideBarComponent {
   setActive(item: string) {
     this.activeItem = item;
   }
+
   toggleSidebar() {
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
-
-    document.body.classList.toggle(
-      'sidebar-collapsed',
-      this.isSidebarCollapsed
-    );
+    this.sidebarToggled.emit(!this.isSidebarCollapsed);
   }
 
   toggleTheme() {

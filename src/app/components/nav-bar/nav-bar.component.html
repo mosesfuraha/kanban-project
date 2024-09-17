@@ -5,7 +5,7 @@
     'bg-dark-tertiary text-light-primary': (isDarkMode$ | async)
   }"
 >
-  <div class="flex items-center justify-between">
+  <div class="flex items-center justify-between w-[78%]">
     <div class="flex items-center space-x-2">
       <h2
         class="text-2xl font-bold"
@@ -50,7 +50,7 @@
 
         <div
           *ngIf="isModalOpen"
-          class="absolute right-0 mt-6 p-3 rounded shadow-xl mt-6 w-40"
+          class="absolute right-0 mt-6 p-3 rounded shadow-xl w-40"
           [ngClass]="{
             'bg-light-white text-gray-800': !(isDarkMode$ | async),
             'bg-dark-secondary text-light-primary shadow-md':

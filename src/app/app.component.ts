@@ -41,4 +41,9 @@ export class AppComponent implements OnInit {
       this.isSidebarVisible = true;
     }
   }
+
+  // Method to toggle sidebar visibility
+  toggleSidebar() {
+    this.isSidebarVisible = !this.isSidebarVisible;
+  }
 }

@@ -1,11 +1,11 @@
 <section
-  class="relative h-screen flex flex-col justify-between font-sans"
+  class="relative h-screen flex flex-col font-sans "
   [ngClass]="{
     'bg-dark-tertiary': (isDarkMode$ | async),
     'bg-light-white': !(isDarkMode$ | async)
   }"
 >
-  <div class="flex items-center ml-7 mt-7">
+  <div class="flex items-center ml-7 mt-7 mb-3">
     <img src="assets/kanban.png" alt="Kanban Logo" class="w-7 h-7 mr-2" />
     <h2
       class="text-2xl font-bold"
@@ -18,7 +18,7 @@
     </h2>
   </div>
 
-  <div *ngIf="!isSidebarCollapsed" class="ml-7">
+  <div class="ml-7 mt-8">
     <p
       class="text-sm font-medium mb-3"
       [ngClass]="{
@@ -129,12 +129,12 @@
     </div>
   </div>
 
-  <div *ngIf="!isSidebarCollapsed" class="flex flex-col items-center">
+  <div class="flex flex-col mt-16">
     <div
-      class="flex items-center justify-center p-2 rounded-lg w-[85%] space-x-4"
+      class="flex items-center justify-center p-2 rounded-lg w-[85%] space-x-4 ml-4"
       [ngClass]="{
         'bg-light-background': !(isDarkMode$ | async),
-        'bg-dark-tertiary': (isDarkMode$ | async)
+        'bg-dark-secondary': (isDarkMode$ | async)
       }"
     >
       <img
@@ -164,39 +164,5 @@
         class="w-5 h-5"
       />
     </div>
-  </div>
-
-  <div class="flex flex-col items-center max-md:hidden">
-    <button
-      class="flex items-center justify-center cursor-pointer w-[90%] p-3 rounded-tr-full rounded-br-full transition-all duration-300 ease-in-out"
-      [ngClass]="{
-        'bg-transparent hover:bg-light-white': !isSidebarCollapsed,
-        'bg-dark-primary': isSidebarCollapsed
-      }"
-      (click)="toggleSidebar()"
-    >
-      <img
-        *ngIf="!isSidebarCollapsed"
-        src="assets/icon-hide-sidebar.svg"
-        alt="Hide Sidebar Icon"
-        class="w-5 h-5 mr-2"
-      />
-      <img
-        *ngIf="isSidebarCollapsed"
-        src="assets/icon-show-sidebar.svg"
-        alt="Show Sidebar Icon"
-        class="w-5 h-5 mr-2"
-      />
-      <p
-        *ngIf="!isSidebarCollapsed"
-        class="text-lg font-semibold"
-        [ngClass]="{
-          'text-dark-text': (isDarkMode$ | async),
-          'text-light-primary': !(isDarkMode$ | async)
-        }"
-      >
-        Hide Sidebar
-      </p>
-    </button>
   </div>
 </section>
