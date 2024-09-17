@@ -6,19 +6,32 @@
   }"
 >
   <div class="flex items-center justify-between">
-    <h2
-      class="text-2xl font-bold"
-      [ngClass]="{
-        'text-dark-background': !(isDarkMode$ | async),
-        'text-light-white': (isDarkMode$ | async)
-      }"
-    >
-      Platform Launch
-    </h2>
+    <div class="flex items-center space-x-2">
+      <h2
+        class="text-2xl font-bold"
+        [ngClass]="{
+          'text-dark-background': !(isDarkMode$ | async),
+          'text-light-white': (isDarkMode$ | async)
+        }"
+      >
+        Platform Launch
+      </h2>
 
-    <div class="flex items-center">
       <button
-        class="py-3 px-4 rounded-full flex items-center font-bold"
+        class="flex items-center justify-center p-2 rounded text-dark-text lg:hidden"
+        (click)="toggleDropdown()"
+      >
+        <img
+          src="assets/icon-chevron-down.svg"
+          alt="Menu Icon"
+          class="w-2 h-2"
+        />
+      </button>
+    </div>
+
+    <div class="flex items-center space-x-7">
+      <button
+        class="py-3 px-6 rounded-full flex items-center font-bold"
         [ngClass]="{
           'bg-[#635FC7] text-white hover:bg-[#A8A4FF] ': !(isDarkMode$ | async),
           'bg-dark-primary text-light-white hover:bg-light-primary':
@@ -30,8 +43,197 @@
           alt="Add Task Icon"
           class="w-2 h-2 mr-1"
         />
-        Add New Task
+        <span class="max-sm:hidden"> Add New Task</span>
       </button>
+      <div class="cursor-pointer relative" (click)="toggleModal()">
+        <img src="assets/icon-vertical-ellipsis.svg" alt="show-option-icon" />
+
+        <div
+          *ngIf="isModalOpen"
+          class="absolute right-0 mt-6 p-3 rounded-lg shadow-xl mt-6 w-40"
+          [ngClass]="{
+            'bg-light-white text-gray-800': !(isDarkMode$ | async),
+            'bg-dark-secondary text-light-primary shadow-md':
+              (isDarkMode$ | async)
+          }"
+        >
+          <button class="w-full py-2 text-left px-3" (click)="editBoard()">
+            <p class="text-sm text-dark-text font-[500]">Edit Board</p>
+          </button>
+          <button
+            class="w-full py-2 text-left px-3 rounded"
+            (click)="deleteBoard()"
+          >
+            <p class="text-sm text-accent-danger font-[500]">Delete Board</p>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    *ngIf="isDropdownOpen"
+    class="fixed left-0 right-0 bottom-0 bg-black bg-opacity-50 z-40 lg:hidden"
+    [ngStyle]="{ top: '74px' }"
+    (click)="toggleDropdown()"
+  ></div>
+
+  <div
+    *ngIf="isDropdownOpen"
+    class="lg:hidden mt-8 bg-[#ffffff] rounded shadow-lg absolute right-5 top-16 w-[95%] z-50"
+    [ngClass]="{
+      'bg-light-white text-gray-800': !(isDarkMode$ | async),
+      'bg-dark-secondary text-light-primary': (isDarkMode$ | async)
+    }"
+  >
+    <ul class="flex flex-col">
+      <p
+        class="text-sm font-medium mb-3 px-4 mt-4"
+        [ngClass]="{
+          'text-[#828FA3]': (isDarkMode$ | async),
+          'text-dark-text': !(isDarkMode$ | async)
+        }"
+      >
+        ALL BOARDS (3)
+      </p>
+      <div
+        class="flex items-center cursor-pointer w-[95%] p-3 rounded-tr-full rounded-br-full"
+        [ngClass]="{
+          'bg-dark-primary':
+            isActive('Platform Launch') && (isDarkMode$ | async),
+          'bg-[#635FC7]': isActive('Platform Launch') && !(isDarkMode$ | async),
+          'hover:bg-light-text': !(isDarkMode$ | async),
+          'hover:bg-light-white': (isDarkMode$ | async),
+          group: true
+        }"
+      >
+        <img
+          src="assets/icon-board.svg"
+          alt="Board Icon"
+          class="w-6 h-6 mr-3 ml-4"
+        />
+        <p
+          class="text-sm font-bold"
+          [ngClass]="{
+            'text-light-white': !(isDarkMode$ | async),
+            'text-light-background':
+              isActive('Platform Launch') && (isDarkMode$ | async),
+            'text-dark-background': !(isDarkMode$ | async),
+            'group-hover:text-[#635FC7]': true
+          }"
+        >
+          Platform Launch
+        </p>
+      </div>
+
+      <div
+        class="flex items-center cursor-pointer w-[95%] p-3 rounded-tr-full rounded-br-full"
+        [ngClass]="{
+          'bg-transparent': true,
+          'hover:bg-light-text': !(isDarkMode$ | async),
+          'hover:bg-light-white': (isDarkMode$ | async)
+        }"
+        (click)="navigateTo('Marketing Plan')"
+      >
+        <img
+          src="assets/icon-board.svg"
+          alt="Board Icon"
+          class="w-6 h-6 mr-3 ml-4"
+        />
+        <p
+          class="text-sm font-medium"
+          [ngClass]="{
+            'text-dark-text': (isDarkMode$ | async),
+            'text-gray-800': !(isDarkMode$ | async)
+          }"
+        >
+          Marketing Plan
+        </p>
+      </div>
+      <div
+        class="flex items-center cursor-pointer w-[95%] p-3 rounded-tr-full rounded-br-full"
+        [ngClass]="{
+          'bg-transparent': true,
+          'hover:bg-light-text': !(isDarkMode$ | async),
+          'hover:bg-light-white': (isDarkMode$ | async)
+        }"
+        (click)="navigateTo('RoadMap')"
+      >
+        <img
+          src="assets/icon-board.svg"
+          alt="Board Icon"
+          class="w-6 h-6 mr-3 ml-4"
+        />
+        <p
+          class="text-sm font-medium"
+          [ngClass]="{
+            'text-dark-text': (isDarkMode$ | async),
+            'text-gray-800': !(isDarkMode$ | async)
+          }"
+        >
+          RoadMap
+        </p>
+      </div>
+      <div
+        class="flex items-center cursor-pointer w-[95%] p-3 rounded-tr-full rounded-br-full mb-10"
+        [ngClass]="{
+          'bg-transparent': true,
+          'hover:bg-light-text': !(isDarkMode$ | async),
+          'hover:bg-light-white': (isDarkMode$ | async)
+        }"
+        (click)="navigateTo('Create New Board')"
+      >
+        <img
+          src="assets/icon-board.svg"
+          alt="Board Icon"
+          class="w-6 h-6 mr-3 ml-4"
+        />
+        <p
+          class="text-sm font-medium"
+          [ngClass]="{
+            'text-dark-text': (isDarkMode$ | async),
+            'text-gray-800': !(isDarkMode$ | async)
+          }"
+        >
+          Create New Board
+        </p>
+      </div>
+    </ul>
+
+    <div class="flex flex-col items-center px-4 pb-4">
+      <div
+        class="flex items-center justify-center p-2 rounded-lg w-full space-x-4"
+        [ngClass]="{
+          'bg-light-background': !(isDarkMode$ | async),
+          'bg-dark-tertiary': (isDarkMode$ | async)
+        }"
+      >
+        <img
+          src="assets/icon-light-theme.svg"
+          alt="Light Theme Icon"
+          class="w-5 h-5"
+        />
+        <div
+          (click)="toggleTheme()"
+          class="relative w-12 h-6 rounded-full cursor-pointer"
+          [ngClass]="{
+            'bg-dark-primary': !(isDarkMode$ | async),
+            'bg-[#635FC7]': (isDarkMode$ | async)
+          }"
+        >
+          <div
+            class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform"
+            [ngClass]="{
+              'transform translate-x-6': (isDarkMode$ | async),
+              'transform translate-x-0': !(isDarkMode$ | async)
+            }"
+          ></div>
+        </div>
+        <img
+          src="assets/icon-dark-theme.svg"
+          alt="Dark Theme Icon"
+          class="w-5 h-5"
+        />
+      </div>
     </div>
   </div>
 </div>
