@@ -49,9 +49,21 @@ export class BoardComponent implements OnInit {
     this.isModalOpen = true;
   }
 
-  
   closeModal() {
     this.isModalOpen = false;
     this.selectedTask = null;
+  }
+
+  handleSubtaskToggled(updatedSubtask: Subtask, task: Task) {
+    const updatedTask = {
+      ...task,
+      subtasks: task.subtasks.map((subtask) =>
+        subtask.id === updatedSubtask.id ? updatedSubtask : subtask
+      ),
+    };
+
+    this.store.dispatch(
+      BoardActions.updateTask({ boardId: this.selectedBoard?.id!, updatedTask })
+    );
   }
 }

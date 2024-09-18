@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Board } from '../../models/board.model';
+import { Board, Task } from '../../models/board.model';
 
 export const loadBoards = createAction('[Board] Load Boards');
 
@@ -44,4 +44,9 @@ export const updateBoardFailure = createAction(
 export const deleteBoardFailure = createAction(
   '[Board] Delete Board Failure',
   props<{ error: Board }>()
+);
+
+export const updateTask = createAction(
+  '[Board] Update Task',
+  props<{ boardId: string; updatedTask: Task }>()
 );

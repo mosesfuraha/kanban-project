@@ -37,6 +37,27 @@ export const boardReducer = createReducer(
       ...state,
       activeBoardId: boardId,
     };
+  }),
+
+  on(BoardActions.updateTask, (state, { boardId, updatedTask }) => {
+    const board = state.entities[boardId];
+
+    if (!board || !board.tasks) {
+      return state; // Return the state unchanged if board or tasks are undefined
+    }
+
+    // Update the specific task in the board's tasks array
+    const updatedTasks = board.tasks.map((task) =>
+      task.id === updatedTask.id ? updatedTask : task
+    );
+
+    return boardAdapter.updateOne(
+      {
+        id: boardId,
+        changes: { tasks: updatedTasks },
+      },
+      state
+    );
   })
 );
 

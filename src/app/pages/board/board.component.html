@@ -63,9 +63,9 @@
     </ul>
   </div>
 </div>
-
 <app-modal
   *ngIf="isModalOpen"
   [task]="selectedTask"
   (closeModal)="closeModal()"
+  (subtaskToggled)="handleSubtaskToggled($event, selectedTask!)"
 ></app-modal>

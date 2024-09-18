@@ -19,7 +19,7 @@ import { ThemeEffects } from './theme/theme.effects';
 import { HttpClientModule } from '@angular/common/http';
 import { BoardEffects } from './store/effects/board.effect';
 import { ModalComponent } from './components/modal/modal.component';
-
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,9 +30,11 @@ import { ModalComponent } from './components/modal/modal.component';
     ModalComponent,
   ],
   imports: [
+    ReactiveFormsModule,
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
+
     StoreModule.forRoot({
       theme: themeReducer,
       boards: boardReducer,
