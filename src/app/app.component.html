@@ -21,7 +21,7 @@
   >
     <app-nav-bar
       class="fixed top-0 z-10 w-full"
-       (boardSelected)="onBoardSelected($event)"
+      (boardSelected)="onBoardSelected($event)"
       [selectedBoard]="selectedBoard"
       [ngClass]="{
         'bg-dark-tertiary text-dark-text': (isDarkMode$ | async),
@@ -38,6 +38,7 @@
     >
       <div class="min-w-full no-scrollbar">
         <app-board [selectedBoard]="selectedBoard"></app-board>
+        
       </div>
     </div>
   </div>

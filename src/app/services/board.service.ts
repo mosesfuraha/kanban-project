@@ -31,7 +31,7 @@ export class BoardService {
         })),
       })),
     };
-  }
+  } 
 
   getBoards(): Observable<Board[]> {
     return this.http

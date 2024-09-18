@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { Board } from '../../models/board.model';
+import { Board, Subtask, Task } from '../../models/board.model';
 import * as BoardActions from '../../store/actions/board.action';
 import { BoardState } from '../../store/reducers/reducer.board';
 import { selectAllBoardsFromStore } from '../../store/selectors/selectors';
@@ -15,6 +15,9 @@ export class BoardComponent implements OnInit {
   isDarkMode$: Observable<boolean>;
   boards$: Observable<Board[]>;
   @Input() selectedBoard: Board | null = null;
+
+  isModalOpen = false;
+  selectedTask: Task | null = null;
 
   constructor(
     private store: Store<{ theme: { isDarkMode: boolean }; boards: BoardState }>
@@ -31,13 +34,24 @@ export class BoardComponent implements OnInit {
     this.selectedBoard = board;
   }
 
-  getCompletedSubtaskCount(task: any): number {
+  getCompletedSubtaskCount(task: Task): number {
     return task.subtasks
-      ? task.subtasks.filter((subtask: any) => subtask.isCompleted).length
+      ? task.subtasks.filter((subtask: Subtask) => subtask.isCompleted).length
       : 0;
   }
 
-  getTotalSubtaskCount(task: any): number {
+  getTotalSubtaskCount(task: Task): number {
     return task.subtasks ? task.subtasks.length : 0;
+  }
+
+  openTaskModal(task: Task) {
+    this.selectedTask = task;
+    this.isModalOpen = true;
+  }
+
+  
+  closeModal() {
+    this.isModalOpen = false;
+    this.selectedTask = null;
   }
 }

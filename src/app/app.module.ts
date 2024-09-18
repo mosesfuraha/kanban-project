@@ -18,6 +18,7 @@ import { themeReducer } from './theme/theme.reducers';
 import { ThemeEffects } from './theme/theme.effects';
 import { HttpClientModule } from '@angular/common/http';
 import { BoardEffects } from './store/effects/board.effect';
+import { ModalComponent } from './components/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { BoardEffects } from './store/effects/board.effect';
     SideBarComponent,
     NavBarComponent,
     TaskComponent,
+    ModalComponent,
   ],
   imports: [
     BrowserModule,

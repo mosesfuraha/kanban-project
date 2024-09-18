@@ -6,8 +6,9 @@
     <h2 class="text-[12px] font-semibold text-dark-text mb-4">
       {{ column.name }} ({{ column.tasks.length }})
     </h2>
-    <ul class="space-y-6">
+    <ul class="space-y-6 cursor-pointer">
       <div
+        (click)="openTaskModal(task)"
         *ngFor="let task of column.tasks"
         class="rounded-lg shadow-md p-4"
         [ngClass]="{
@@ -16,7 +17,7 @@
         }"
       >
         <p
-          class="text-sm font-semibold text-dark-tertiary"
+          class="text-sm font-semibold text-dark-tertiary hover:text-[#635FC7]"
           [ngClass]="{
             'text-dark-secondary': !(isDarkMode$ | async),
             'text-light-white': (isDarkMode$ | async)
@@ -62,3 +63,9 @@
     </ul>
   </div>
 </div>
+
+<app-modal
+  *ngIf="isModalOpen"
+  [task]="selectedTask"
+  (closeModal)="closeModal()"
+></app-modal>
