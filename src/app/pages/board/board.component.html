@@ -1,8 +1,14 @@
 <div class="flex space-x-4 p-4 font-sans overflow-x-auto">
-  <div class="w-[250px] flex-shrink-0">
-    <h2 class="text-[12px] font-semibold text-dark-text mb-4">To Do (4)</h2>
+  <div
+    *ngFor="let column of selectedBoard?.columns"
+    class="w-[250px] flex-shrink-0"
+  >
+    <h2 class="text-[12px] font-semibold text-dark-text mb-4">
+      {{ column.name }} ({{ column.tasks.length }})
+    </h2>
     <ul class="space-y-6">
       <div
+        *ngFor="let task of column.tasks"
         class="rounded-lg shadow-md p-4"
         [ngClass]="{
           'bg-light-white text-gray-800': !(isDarkMode$ | async),
@@ -16,224 +22,15 @@
             'text-light-white': (isDarkMode$ | async)
           }"
         >
-          Build UI for onboarding flow
+          {{ task.title }}
         </p>
-        <p class="text-[14px] text-dark-text font-semibold">1 of 3 subtasks</p>
-      </div>
-      <div
-        class="rounded-lg shadow-md p-4"
-        [ngClass]="{
-          'bg-light-white text-gray-800': !(isDarkMode$ | async),
-          'bg-dark-tertiary text-light-primary': (isDarkMode$ | async)
-        }"
-      >
-        <p
-          class="text-sm font-semibold text-dark-tertiary"
-          [ngClass]="{
-            'text-dark-secondary': !(isDarkMode$ | async),
-            'text-light-white': (isDarkMode$ | async)
-          }"
-        >
-          Build UI for onboarding flow
+        <p class="text-[14px] text-dark-text font-semibold">
+          {{ getCompletedSubtaskCount(task) }} of
+          {{ getTotalSubtaskCount(task) }} subtasks
         </p>
-        <p class="text-[14px] text-dark-text font-semibold">1 of 4 subtasks</p>
-      </div>
-      <div
-        class="rounded-lg shadow-md p-4"
-        [ngClass]="{
-          'bg-light-white text-gray-800': !(isDarkMode$ | async),
-          'bg-dark-tertiary text-light-primary': (isDarkMode$ | async)
-        }"
-      >
-        <p
-          class="text-sm font-semibold text-dark-tertiary"
-          [ngClass]="{
-            'text-dark-secondary': !(isDarkMode$ | async),
-            'text-light-white': (isDarkMode$ | async)
-          }"
-        >
-          Build UI for onboarding flow
-        </p>
-        <p class="text-[14px] text-dark-text font-semibold">1 of 4 subtasks</p>
-      </div>
-      <div
-        class="rounded-lg shadow-md p-4"
-        [ngClass]="{
-          'bg-light-white text-gray-800': !(isDarkMode$ | async),
-          'bg-dark-tertiary text-light-primary': (isDarkMode$ | async)
-        }"
-      >
-        <p
-          class="text-sm font-semibold text-dark-tertiary"
-          [ngClass]="{
-            'text-dark-secondary': !(isDarkMode$ | async),
-            'text-light-white': (isDarkMode$ | async)
-          }"
-        >
-          Build UI for onboarding flow
-        </p>
-        <p class="text-[14px] text-dark-text font-semibold">1 of 4 subtasks</p>
       </div>
     </ul>
   </div>
-
-  <div class="w-[250px] flex-shrink-0">
-    <h2 class="text-[12px] font-semibold text-dark-text mb-4">Doing (2)</h2>
-    <ul class="space-y-6">
-      <div
-        class="rounded-lg shadow-md p-4"
-        [ngClass]="{
-          'bg-light-white text-gray-800': !(isDarkMode$ | async),
-          'bg-dark-tertiary text-light-primary': (isDarkMode$ | async)
-        }"
-      >
-        <p
-          class="text-sm font-semibold text-dark-tertiary"
-          [ngClass]="{
-            'text-dark-secondary': !(isDarkMode$ | async),
-            'text-light-white': (isDarkMode$ | async)
-          }"
-        >
-          Build UI for onboarding flow
-        </p>
-        <p class="text-[14px] text-dark-text font-semibold">1 of 3 subtasks</p>
-      </div>
-      <div
-        class="rounded-lg shadow-md p-4"
-        [ngClass]="{
-          'bg-light-white text-gray-800': !(isDarkMode$ | async),
-          'bg-dark-tertiary text-light-primary': (isDarkMode$ | async)
-        }"
-      >
-        <p
-          class="text-sm font-semibold text-dark-tertiary"
-          [ngClass]="{
-            'text-dark-secondary': !(isDarkMode$ | async),
-            'text-light-white': (isDarkMode$ | async)
-          }"
-        >
-          Once we feel version one is ready, we need to rigorously test it both
-          internally and externally to identify any major gaps
-        </p>
-        <p class="text-[14px] text-dark-text font-semibold">3 of 4 subtasks</p>
-      </div>
-    </ul>
-  </div>
-
-  <div class="w-[250px] flex-shrink-0">
-    <h2 class="text-[12px] font-semibold text-dark-text mb-4">Done (6)</h2>
-    <ul class="space-y-6">
-      <div
-        class="rounded-lg shadow-md p-4"
-        [ngClass]="{
-          'bg-light-white text-gray-800': !(isDarkMode$ | async),
-          'bg-dark-tertiary text-light-primary': (isDarkMode$ | async)
-        }"
-      >
-        <p
-          class="text-sm font-semibold text-dark-tertiary"
-          [ngClass]="{
-            'text-dark-secondary': !(isDarkMode$ | async),
-            'text-light-white': (isDarkMode$ | async)
-          }"
-        >
-          Build UI for onboarding flow
-        </p>
-        <p class="text-[14px] text-dark-text font-semibold">1 of 3 subtasks</p>
-      </div>
-      <div
-        class="rounded-lg shadow-md p-4"
-        [ngClass]="{
-          'bg-light-white text-gray-800': !(isDarkMode$ | async),
-          'bg-dark-tertiary text-light-primary': (isDarkMode$ | async)
-        }"
-      >
-        <p
-          class="text-sm font-semibold text-dark-tertiary"
-          [ngClass]="{
-            'text-dark-secondary': !(isDarkMode$ | async),
-            'text-light-white': (isDarkMode$ | async)
-          }"
-        >
-          Build UI for onboarding flow
-        </p>
-        <p class="text-[14px] text-dark-text font-semibold">1 of 3 subtasks</p>
-      </div>
-      <div
-        class="rounded-lg shadow-md p-4"
-        [ngClass]="{
-          'bg-light-white text-gray-800': !(isDarkMode$ | async),
-          'bg-dark-tertiary text-light-primary': (isDarkMode$ | async)
-        }"
-      >
-        <p
-          class="text-sm font-semibold text-dark-tertiary"
-          [ngClass]="{
-            'text-dark-secondary': !(isDarkMode$ | async),
-            'text-light-white': (isDarkMode$ | async)
-          }"
-        >
-          Build UI for onboarding flow
-        </p>
-        <p class="text-[14px] text-dark-text font-semibold">1 of 3 subtasks</p>
-      </div>
-      <div
-        class="rounded-lg shadow-md p-4"
-        [ngClass]="{
-          'bg-light-white text-gray-800': !(isDarkMode$ | async),
-          'bg-dark-tertiary text-light-primary': (isDarkMode$ | async)
-        }"
-      >
-        <p
-          class="text-sm font-semibold text-dark-tertiary"
-          [ngClass]="{
-            'text-dark-secondary': !(isDarkMode$ | async),
-            'text-light-white': (isDarkMode$ | async)
-          }"
-        >
-          Build UI for onboarding flow
-        </p>
-        <p class="text-[14px] text-dark-text font-semibold">1 of 3 subtasks</p>
-      </div>
-      <div
-        class="rounded-lg shadow-md p-4"
-        [ngClass]="{
-          'bg-light-white text-gray-800': !(isDarkMode$ | async),
-          'bg-dark-tertiary text-light-primary': (isDarkMode$ | async)
-        }"
-      >
-        <p
-          class="text-sm font-semibold text-dark-tertiary"
-          [ngClass]="{
-            'text-dark-secondary': !(isDarkMode$ | async),
-            'text-light-white': (isDarkMode$ | async)
-          }"
-        >
-          Build UI for onboarding flow
-        </p>
-        <p class="text-[14px] text-dark-text font-semibold">1 of 3 subtasks</p>
-      </div>
-      <div
-        class="rounded-lg shadow-md p-4"
-        [ngClass]="{
-          'bg-light-white text-gray-800': !(isDarkMode$ | async),
-          'bg-dark-tertiary text-light-primary': (isDarkMode$ | async)
-        }"
-      >
-        <p
-          class="text-sm font-semibold text-dark-tertiary"
-          [ngClass]="{
-            'text-dark-secondary': !(isDarkMode$ | async),
-            'text-light-white': (isDarkMode$ | async)
-          }"
-        >
-          Build UI for onboarding flow
-        </p>
-        <p class="text-[14px] text-dark-text font-semibold">1 of 3 subtasks</p>
-      </div>
-    </ul>
-  </div>
-
   <div
     class="w-[250px] h-[500px] rounded-lg flex justify-center items-center flex-shrink-0"
     [ngClass]="{

@@ -1,3 +1,4 @@
+import { boardReducer } from './store/reducers/reducer.board';
 import { NgModule, isDevMode } from '@angular/core';
 import {
   BrowserModule,
@@ -15,6 +16,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { themeReducer } from './theme/theme.reducers';
 import { ThemeEffects } from './theme/theme.effects';
+import { HttpClientModule } from '@angular/common/http';
+import { BoardEffects } from './store/effects/board.effect';
 
 @NgModule({
   declarations: [
@@ -26,11 +29,13 @@ import { ThemeEffects } from './theme/theme.effects';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     StoreModule.forRoot({
       theme: themeReducer,
+      boards: boardReducer,
     }),
-    EffectsModule.forRoot([ThemeEffects]),
+    EffectsModule.forRoot([ThemeEffects, BoardEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
   ],
   providers: [provideClientHydration()],

@@ -1,5 +1,5 @@
 <section
-  class="relative h-screen flex flex-col font-sans "
+  class="relative h-screen flex flex-col font-sans"
   [ngClass]="{
     'bg-dark-tertiary': (isDarkMode$ | async),
     'bg-light-white': !(isDarkMode$ | async)
@@ -26,110 +26,39 @@
         'text-dark-text': !(isDarkMode$ | async)
       }"
     >
-      ALL BOARDS (3)
+      ALL BOARDS ({{ (boards$ | async)?.length }})
     </p>
+
     <div
+      *ngFor="let board of boards$ | async"
       class="flex items-center cursor-pointer w-[90%] p-3 rounded-tr-full rounded-br-full"
       [ngClass]="{
-        'bg-dark-primary': isActive('Platform Launch') && (isDarkMode$ | async),
-        'bg-light-primary':
-          isActive('Platform Launch') && !(isDarkMode$ | async),
+        'bg-dark-primary': isActive(board.name) && (isDarkMode$ | async),
+        'bg-light-primary': isActive(board.name) && !(isDarkMode$ | async),
         'hover:bg-light-text': !(isDarkMode$ | async),
         'hover:bg-dark-tertiary': (isDarkMode$ | async)
       }"
+      (click)="setActive(board)"
     >
       <img
         src="assets/icon-board.svg"
         alt="Board Icon"
-        class="w-6 h-6 mr-3 ml-4"
+        class="w-4 h-4 mr-3 ml-4"
       />
       <p
-        class="text-sm font-medium"
+        class="text-sm font-semibold"
         [ngClass]="{
-          'text-light-white': !(isDarkMode$ | async),
+          'text-dark-secondary': !(isDarkMode$ | async),
           'text-light-background':
-            isActive('Platform Launch') && (isDarkMode$ | async),
+            isActive(board.name) && (isDarkMode$ | async),
           'text-dark-background': !(isDarkMode$ | async)
         }"
       >
-        Platform Launch
-      </p>
-    </div>
-
-    <div
-      class="slider-items flex items-center cursor-pointer w-[90%] p-3 rounded-tr-full rounded-br-full"
-      [ngClass]="{
-        'bg-transparent': true,
-        'hover:bg-light-text': !(isDarkMode$ | async),
-        'hover:bg-dark-tertiary': (isDarkMode$ | async)
-      }"
-    >
-      <img
-        src="assets/icon-board.svg"
-        alt="Board Icon"
-        class="w-6 h-6 mr-3 ml-4"
-      />
-      <p
-        class="text-sm font-medium"
-        [ngClass]="{
-          'text-dark-text': (isDarkMode$ | async),
-          'text-gray-800': !(isDarkMode$ | async)
-        }"
-      >
-        Marketing Plan
-      </p>
-    </div>
-
-    <div
-      class="slider-items flex items-center cursor-pointer w-[90%] p-3 rounded-tr-full rounded-br-full"
-      [ngClass]="{
-        'bg-transparent': true,
-        'hover:bg-light-text': !(isDarkMode$ | async),
-        'hover:bg-dark-tertiary': (isDarkMode$ | async)
-      }"
-    >
-      <img
-        src="assets/icon-board.svg"
-        alt="Board Icon"
-        class="w-6 h-6 mr-3 ml-4"
-      />
-      <p
-        class="text-sm font-medium"
-        [ngClass]="{
-          'text-dark-text': (isDarkMode$ | async),
-          'text-gray-800': !(isDarkMode$ | async)
-        }"
-      >
-        RoadMap
-      </p>
-    </div>
-
-    <div
-      class="slider-items flex items-center cursor-pointer w-[90%] p-3 rounded-tr-full rounded-br-full mb-10"
-      [ngClass]="{
-        'bg-transparent': true,
-        'hover:bg-light-text': !(isDarkMode$ | async),
-        'hover:bg-dark-tertiary': (isDarkMode$ | async)
-      }"
-    >
-      <img
-        src="assets/icon-board.svg"
-        alt="Board Icon"
-        class="w-6 h-6 mr-3 ml-4"
-      />
-      <p
-        class="text-sm font-medium"
-        [ngClass]="{
-          'text-dark-text': (isDarkMode$ | async),
-          'text-gray-800': !(isDarkMode$ | async)
-        }"
-      >
-        Create New Board
+        {{ board.name }}
       </p>
     </div>
   </div>
-
-  <div class="flex flex-col mt-16">
+  <div class="flex flex-col mt-40">
     <div
       class="flex items-center justify-center p-2 rounded-lg w-[85%] space-x-4 ml-4"
       [ngClass]="{

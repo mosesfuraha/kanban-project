@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { Board } from '../../models/board.model';
 import { ThemeState } from '../../theme/theme.reducers';
+
 import { toggleTheme } from '../../theme/theme.actions';
+import { selectAllBoardsFromStore } from '../../store/selectors/selectors';
 
 @Component({
   selector: 'app-nav-bar',
@@ -10,49 +13,39 @@ import { toggleTheme } from '../../theme/theme.actions';
   styleUrls: ['./nav-bar.component.css'],
 })
 export class NavBarComponent {
-  activeItem = 'Platform Launch';
+  @Input() selectedBoard: Board | null = null;
+  @Output() boardSelected = new EventEmitter<Board>();
+
   isDarkMode$: Observable<boolean>;
   isDropdownOpen = false;
   isModalOpen = false;
 
-  constructor(private store: Store<{ theme: ThemeState }>) {
+  boards$: Observable<Board[]>;
+
+  constructor(private store: Store<{ theme: ThemeState; boards: any }>) {
     this.isDarkMode$ = this.store.select((state) => state.theme.isDarkMode);
+
+    this.boards$ = this.store.select(selectAllBoardsFromStore);
   }
 
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
-  navigateTo(boardName: string) {
-    console.log(`Navigating to ${boardName}`);
+  navigateTo(board: Board) {
+    this.boardSelected.emit(board);
     this.isDropdownOpen = false;
   }
 
-  isActive(item: string) {
-    return this.activeItem === item;
+  isActive(boardName: string): boolean {
+    return this.selectedBoard ? this.selectedBoard.name === boardName : false;
   }
 
-  setActive(item: string) {
-    this.activeItem = item;
-  }
   toggleTheme() {
     this.store.dispatch(toggleTheme());
   }
 
   toggleModal() {
     this.isModalOpen = !this.isModalOpen;
-  }
-
-  editBoard() {
-    console.log('Edit Board clicked');
-    this.closeModal();
-  }
-
-  deleteBoard() {
-    console.log('Delete Board clicked');
-    this.closeModal();
-  }
-  closeModal() {
-    this.isModalOpen = false;
   }
 }

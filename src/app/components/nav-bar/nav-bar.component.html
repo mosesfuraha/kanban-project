@@ -14,7 +14,7 @@
           'text-light-white': (isDarkMode$ | async)
         }"
       >
-        Platform Launch
+        {{ selectedBoard?.name || "Platform Launch" }}
       </h2>
 
       <button
@@ -57,19 +57,17 @@
               (isDarkMode$ | async)
           }"
         >
-          <button class="w-full py-2 text-left px-3" (click)="editBoard()">
+          <button class="w-full py-2 text-left px-3">
             <p class="text-sm text-dark-text font-[500]">Edit Board</p>
           </button>
-          <button
-            class="w-full py-2 text-left px-3 rounded"
-            (click)="deleteBoard()"
-          >
+          <button class="w-full py-2 text-left px-3 rounded">
             <p class="text-sm text-accent-danger font-[500]">Delete Board</p>
           </button>
         </div>
       </div>
     </div>
   </div>
+
   <div
     *ngIf="isDropdownOpen"
     class="fixed left-0 right-0 bottom-0 bg-black bg-opacity-50 z-40 lg:hidden"
@@ -93,18 +91,21 @@
           'text-dark-text': !(isDarkMode$ | async)
         }"
       >
-        ALL BOARDS (3)
+        ALL BOARDS ({{ (boards$ | async)?.length || 0 }})
       </p>
+
+      <!-- Render dynamic boards -->
       <div
+        *ngFor="let board of boards$ | async"
         class="flex items-center cursor-pointer w-[95%] p-3 rounded-tr-full rounded-br-full"
         [ngClass]="{
-          'bg-dark-primary':
-            isActive('Platform Launch') && (isDarkMode$ | async),
-          'bg-[#635FC7]': isActive('Platform Launch') && !(isDarkMode$ | async),
+          'bg-dark-primary': isActive(board.name) && (isDarkMode$ | async),
+          'bg-[#635FC7]': isActive(board.name) && !(isDarkMode$ | async),
           'hover:bg-light-text': !(isDarkMode$ | async),
           'hover:bg-light-white': (isDarkMode$ | async),
           group: true
         }"
+        (click)="navigateTo(board)"
       >
         <img
           src="assets/icon-board.svg"
@@ -116,85 +117,12 @@
           [ngClass]="{
             'text-light-white': !(isDarkMode$ | async),
             'text-light-background':
-              isActive('Platform Launch') && (isDarkMode$ | async),
+              isActive(board.name) && (isDarkMode$ | async),
             'text-dark-background': !(isDarkMode$ | async),
             'group-hover:text-[#635FC7]': true
           }"
         >
-          Platform Launch
-        </p>
-      </div>
-
-      <div
-        class="flex items-center cursor-pointer w-[95%] p-3 rounded-tr-full rounded-br-full"
-        [ngClass]="{
-          'bg-transparent': true,
-          'hover:bg-light-text': !(isDarkMode$ | async),
-          'hover:bg-light-white': (isDarkMode$ | async)
-        }"
-        (click)="navigateTo('Marketing Plan')"
-      >
-        <img
-          src="assets/icon-board.svg"
-          alt="Board Icon"
-          class="w-6 h-6 mr-3 ml-4"
-        />
-        <p
-          class="text-sm font-medium"
-          [ngClass]="{
-            'text-dark-text': (isDarkMode$ | async),
-            'text-gray-800': !(isDarkMode$ | async)
-          }"
-        >
-          Marketing Plan
-        </p>
-      </div>
-      <div
-        class="flex items-center cursor-pointer w-[95%] p-3 rounded-tr-full rounded-br-full"
-        [ngClass]="{
-          'bg-transparent': true,
-          'hover:bg-light-text': !(isDarkMode$ | async),
-          'hover:bg-light-white': (isDarkMode$ | async)
-        }"
-        (click)="navigateTo('RoadMap')"
-      >
-        <img
-          src="assets/icon-board.svg"
-          alt="Board Icon"
-          class="w-6 h-6 mr-3 ml-4"
-        />
-        <p
-          class="text-sm font-medium"
-          [ngClass]="{
-            'text-dark-text': (isDarkMode$ | async),
-            'text-gray-800': !(isDarkMode$ | async)
-          }"
-        >
-          RoadMap
-        </p>
-      </div>
-      <div
-        class="flex items-center cursor-pointer w-[95%] p-3 rounded-tr-full rounded-br-full mb-10"
-        [ngClass]="{
-          'bg-transparent': true,
-          'hover:bg-light-text': !(isDarkMode$ | async),
-          'hover:bg-light-white': (isDarkMode$ | async)
-        }"
-        (click)="navigateTo('Create New Board')"
-      >
-        <img
-          src="assets/icon-board.svg"
-          alt="Board Icon"
-          class="w-6 h-6 mr-3 ml-4"
-        />
-        <p
-          class="text-sm font-medium"
-          [ngClass]="{
-            'text-dark-text': (isDarkMode$ | async),
-            'text-gray-800': !(isDarkMode$ | async)
-          }"
-        >
-          Create New Board
+          {{ board.name }}
         </p>
       </div>
     </ul>
