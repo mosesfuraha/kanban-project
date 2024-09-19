@@ -10,6 +10,7 @@ export interface Task {
   description: string;
   status: string;
   subtasks: Subtask[];
+  isActive: boolean;
 }
 
 export interface Column {
@@ -22,5 +23,4 @@ export interface Board {
   id: string;
   name: string;
   columns: Column[];
-  tasks: Task[];
 }

@@ -19,6 +19,7 @@ export class NavBarComponent {
   isDarkMode$: Observable<boolean>;
   isDropdownOpen = false;
   isModalOpen = false;
+  isAddTaskModalOpen = false;
 
   boards$: Observable<Board[]>;
 
@@ -47,5 +48,9 @@ export class NavBarComponent {
 
   toggleModal() {
     this.isModalOpen = !this.isModalOpen;
+  }
+
+  toggleAddTaskModal() {
+    this.isAddTaskModalOpen = !this.isAddTaskModalOpen;
   }
 }

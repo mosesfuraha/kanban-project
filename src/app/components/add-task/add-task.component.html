@@ -1,0 +1,112 @@
+<div *ngIf="showForm" class="bg-white p-6 rounded-lg shadow-lg w-full">
+  <h2 class="text-xl font-bold mb-4">Add New Task</h2>
+
+  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    <!-- Title -->
+    <div class="mb-4">
+      <input
+        formControlName="title"
+        type="text"
+        class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+        placeholder="e.g. Take coffee break"
+      />
+      <div
+        *ngIf="title?.invalid && (title?.touched || title?.dirty)"
+        class="text-red-500"
+      >
+        <small *ngIf="title?.errors?.['required']">Title is required.</small>
+        <small *ngIf="title?.errors?.['minlength']"
+          >Title must be at least 3 characters long.</small
+        >
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="mb-4">
+      <p class="text-gray-600 mb-1">Description</p>
+      <textarea
+        formControlName="description"
+        class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+        rows="4"
+        placeholder="e.g. It’s always good to take a break. This 15 minute break will recharge the batteries a little."
+      ></textarea>
+      <div
+        *ngIf="
+          description?.invalid && (description?.touched || description?.dirty)
+        "
+        class="text-red-500"
+      >
+        <small *ngIf="description?.errors?.['required']"
+          >Description is required.</small
+        >
+      </div>
+    </div>
+
+    <!-- Subtasks -->
+    <div class="mb-4">
+      <p class="text-gray-600 mb-1">Subtasks</p>
+      <div formArrayName="subtasks">
+        <div
+          *ngFor="let subtask of subtasks.controls; let i = index"
+          class="flex items-center mb-2"
+        >
+          <input
+            [formControlName]="i"
+            type="text"
+            class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+            placeholder="e.g. Prepare coffee"
+          />
+          <img
+            src="assets/icon-cross.svg"
+            alt="Remove"
+            class="w-5 h-5 ml-2 cursor-pointer"
+            (click)="removeSubtask(i)"
+          />
+          <div
+            *ngIf="subtask.invalid && (subtask.touched || subtask.dirty)"
+            class="text-red-500"
+          >
+            <small>Subtask is required.</small>
+          </div>
+        </div>
+      </div>
+      <button
+        type="button"
+        (click)="addSubtask()"
+        class="w-full p-2 bg-[#F4F7FD] text-[#635FC7] font-semibold rounded-full mt-2"
+      >
+        <span class="text-xl mr-1">+</span> Add Subtask
+      </button>
+    </div>
+
+    <!-- Status -->
+    <div class="mb-4">
+      <p class="text-gray-600 mb-2">Current Status</p>
+      <select
+        formControlName="status"
+        class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+      >
+        <option value="todo">Todo</option>
+        <option value="doing">Doing</option>
+        <option value="done">Done</option>
+      </select>
+      <div
+        *ngIf="status?.invalid && (status?.touched || status?.dirty)"
+        class="text-red-500"
+      >
+        <small *ngIf="status?.errors?.['required']">Status is required.</small>
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="w-full bg-[#635FC7] text-white p-2 rounded-full hover:bg-blue-600 transition-colors"
+    >
+      Create Task
+    </button>
+  </form>
+</div>
+
+<div *ngIf="!showForm" class="text-center">
+  <p class="text-lg font-semibold">Task created successfully!</p>
+</div>

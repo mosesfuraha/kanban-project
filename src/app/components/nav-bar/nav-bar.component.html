@@ -32,6 +32,7 @@
     <div class="flex items-center space-x-7">
       <button
         class="py-3 px-6 rounded-full flex items-center font-bold"
+        (click)="toggleAddTaskModal()"
         [ngClass]="{
           'bg-[#635FC7] text-white hover:bg-[#A8A4FF] ': !(isDarkMode$ | async),
           'bg-dark-primary text-light-white hover:bg-light-primary':
@@ -94,7 +95,6 @@
         ALL BOARDS ({{ (boards$ | async)?.length || 0 }})
       </p>
 
-      <!-- Render dynamic boards -->
       <div
         *ngFor="let board of boards$ | async"
         class="flex items-center cursor-pointer w-[95%] p-3 rounded-tr-full rounded-br-full"
@@ -162,6 +162,24 @@
           class="w-5 h-5"
         />
       </div>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="isAddTaskModalOpen"
+  class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-1000 w-screen h-screen"
+>
+  <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg relative">
+    <button
+      class="absolute top-3 right-3 text-gray-600 hover:text-gray-800"
+      (click)="toggleAddTaskModal()"
+    >
+      <img src="assets/icon-cross.svg" alt="Close" />
+    </button>
+
+    <div class="overflow-auto hide-scrollbar max-h-[80vh]">
+      <app-add-task></app-add-task>
     </div>
   </div>
 </div>

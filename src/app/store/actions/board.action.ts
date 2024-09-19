@@ -11,9 +11,13 @@ export const loadBoardsFailure = createAction(
   '[Board] Load Boards Failure',
   props<{ error: any }>()
 );
+export const addTask = createAction(
+  '[Board] Add Task',
+  props<{ boardName: string; columnId: string; task: Task }>()
+);
 
 export const setSubtaskCompleted = createAction(
-  'boards/setSubtaskCompleted',
+  '[Board] Toggle Subtask Completion',
   props<{
     colIndex: number;
     taskIndex: number;
@@ -22,18 +26,10 @@ export const setSubtaskCompleted = createAction(
   }>()
 );
 
-
-
-export const addBoard = createAction(
-  '[Board] Add Board',
-  props<{ board: Board }>()
-);
-
 export const setActiveBoard = createAction(
   '[Board] Set Active Board',
   props<{ boardId: string }>()
 );
-
 
 export const addBoardFailure = createAction(
   '[Board] Add Board Failure',
@@ -54,7 +50,3 @@ export const updateTask = createAction(
   '[Board] Update Task',
   props<{ boardId: string; updatedTask: Task }>()
 );
-export function selectBoard(arg0: { board: Board; }): any {
-  throw new Error('Function not implemented.');
-}
-

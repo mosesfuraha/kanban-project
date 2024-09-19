@@ -1,4 +1,4 @@
-<div class="flex space-x-4 p-4 font-sans overflow-x-auto">
+<div class="flex space-x-16 p-4 font-sans overflow-x-auto">
   <div
     *ngFor="let column of selectedBoard?.columns"
     class="w-[250px] flex-shrink-0"
@@ -17,7 +17,7 @@
         }"
       >
         <p
-          class="text-sm font-semibold text-dark-tertiary hover:text-[#635FC7]"
+          class="text-sm font-semibold text-dark-tertiary hover:text-[#635FC7] w-[250px]"
           [ngClass]="{
             'text-dark-secondary': !(isDarkMode$ | async),
             'text-light-white': (isDarkMode$ | async)

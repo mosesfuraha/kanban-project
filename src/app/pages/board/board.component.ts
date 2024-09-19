@@ -24,7 +24,7 @@ export class BoardComponent implements OnInit {
       theme: { isDarkMode: boolean };
       boards: BoardState;
     }>,
-    private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
+    private cdr: ChangeDetectorRef 
   ) {
     this.isDarkMode$ = this.store.select((state) => state.theme.isDarkMode);
     this.boards$ = this.store.select(selectAllBoardsFromStore);

@@ -20,6 +20,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BoardEffects } from './store/effects/board.effect';
 import { ModalComponent } from './components/modal/modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AddTaskComponent } from './components/add-task/add-task.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,6 +29,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     NavBarComponent,
     TaskComponent,
     ModalComponent,
+    AddTaskComponent,
   ],
   imports: [
     ReactiveFormsModule,
