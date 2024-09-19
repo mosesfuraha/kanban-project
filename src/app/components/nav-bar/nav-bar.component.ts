@@ -14,6 +14,8 @@ import { selectAllBoardsFromStore } from '../../store/selectors/selectors';
 })
 export class NavBarComponent {
   @Input() selectedBoard: Board | null = null;
+  @Input() selectedColumnId?: string; 
+
   @Output() boardSelected = new EventEmitter<Board>();
 
   isDarkMode$: Observable<boolean>;

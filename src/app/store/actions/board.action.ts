@@ -13,8 +13,9 @@ export const loadBoardsFailure = createAction(
 );
 export const addTask = createAction(
   '[Board] Add Task',
-  props<{ boardName: string; columnId: string; task: Task }>()
+  props<{ boardName: string; task: Task; newColIndex: number }>()
 );
+
 
 export const setSubtaskCompleted = createAction(
   '[Board] Toggle Subtask Completion',

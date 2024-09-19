@@ -10,7 +10,6 @@ export interface Task {
   description: string;
   status: string;
   subtasks: Subtask[];
-  isActive: boolean;
 }
 
 export interface Column {

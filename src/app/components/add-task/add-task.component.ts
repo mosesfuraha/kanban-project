@@ -1,5 +1,4 @@
-// add-task.component.ts
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { v4 as uuidv4 } from 'uuid';
@@ -15,8 +14,8 @@ export class AddTaskComponent {
   taskForm: FormGroup;
   showForm: boolean = true;
 
-  @Input() boardId!: string; // Get the boardId via input property
-  @Input() columnId!: string; // Get the columnId via input property
+  boardName: string = 'Platform Launch';
+  columnId: string = '7446e088-0b9f-44da-9fc4-5de506b4649e';
 
   constructor(private fb: FormBuilder, private store: Store) {
     this.taskForm = this.fb.group({
@@ -53,20 +52,27 @@ export class AddTaskComponent {
 
   onSubmit() {
     if (this.taskForm.valid) {
-      const task: Task = {
+      const newTask: Task = {
         id: uuidv4(),
         title: this.taskForm.value.title,
         description: this.taskForm.value.description,
         status: this.taskForm.value.status,
-        subtasks: this.subtasks.value.map((title: string) => ({
+        subtasks: this.taskForm.value.subtasks.map((subtask: string) => ({
           id: uuidv4(),
-          title,
+          title: subtask,
           isCompleted: false,
         })),
-        isActive: true,
       };
 
-    
+      const newColIndex = 0;
+
+      this.store.dispatch(
+        addTask({
+          boardName: this.boardName,
+          task: newTask,
+          newColIndex: newColIndex,
+        })
+      );
 
       this.taskForm.reset({
         title: '',
@@ -75,10 +81,9 @@ export class AddTaskComponent {
         status: 'todo',
       });
       this.subtasks.clear();
-      this.addSubtask(); // Reset to one initial subtask
-      this.showForm = false; // Toggle to success message
+      this.showForm = false;
     } else {
-      this.taskForm.markAllAsTouched(); // Mark all controls as touched if the form is invalid
+      this.taskForm.markAllAsTouched();
     }
   }
 }
