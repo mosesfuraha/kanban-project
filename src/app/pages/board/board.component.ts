@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Board, Subtask, Task } from '../../models/board.model';
@@ -20,7 +20,11 @@ export class BoardComponent implements OnInit {
   selectedTask: Task | null = null;
 
   constructor(
-    private store: Store<{ theme: { isDarkMode: boolean }; boards: BoardState }>
+    private store: Store<{
+      theme: { isDarkMode: boolean };
+      boards: BoardState;
+    }>,
+    private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
   ) {
     this.isDarkMode$ = this.store.select((state) => state.theme.isDarkMode);
     this.boards$ = this.store.select(selectAllBoardsFromStore);
@@ -47,6 +51,7 @@ export class BoardComponent implements OnInit {
   openTaskModal(task: Task) {
     this.selectedTask = task;
     this.isModalOpen = true;
+    this.cdr.detectChanges();
   }
 
   closeModal() {
@@ -54,16 +59,22 @@ export class BoardComponent implements OnInit {
     this.selectedTask = null;
   }
 
-  handleSubtaskToggled(updatedSubtask: Subtask, task: Task) {
-    const updatedTask = {
-      ...task,
-      subtasks: task.subtasks.map((subtask) =>
-        subtask.id === updatedSubtask.id ? updatedSubtask : subtask
-      ),
-    };
-
+  handleSubtaskToggled(
+    event: {
+      colIndex: number;
+      taskIndex: number;
+      subtaskIndex: number;
+      isCompleted: boolean;
+    },
+    task: Task
+  ): void {
     this.store.dispatch(
-      BoardActions.updateTask({ boardId: this.selectedBoard?.id!, updatedTask })
+      BoardActions.setSubtaskCompleted({
+        colIndex: event.colIndex,
+        taskIndex: event.taskIndex,
+        subtaskIndex: event.subtaskIndex,
+        isCompleted: event.isCompleted,
+      })
     );
   }
 }

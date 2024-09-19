@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
+import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import * as BoardActions from '../actions/board.action';
 import { Board } from '../../models/board.model';
 
@@ -24,14 +24,6 @@ export const boardReducer = createReducer(
     return boardAdapter.addOne(board, state);
   }),
 
-  on(BoardActions.updateBoard, (state, { board }) => {
-    return boardAdapter.updateOne({ id: board.id, changes: board }, state);
-  }),
-
-  on(BoardActions.deleteBoard, (state, { boardId }) => {
-    return boardAdapter.removeOne(boardId, state);
-  }),
-
   on(BoardActions.setActiveBoard, (state, { boardId }) => {
     return {
       ...state,
@@ -39,26 +31,28 @@ export const boardReducer = createReducer(
     };
   }),
 
-  on(BoardActions.updateTask, (state, { boardId, updatedTask }) => {
-    const board = state.entities[boardId];
+  on(
+    BoardActions.setSubtaskCompleted,
+    (state, { colIndex, taskIndex, subtaskIndex, isCompleted }) => {
+      const activeBoard = state.entities[state.activeBoardId!];
 
-    if (!board || !board.tasks) {
-      return state; // Return the state unchanged if board or tasks are undefined
+      if (!activeBoard) return state;
+
+      const updatedBoard = JSON.parse(JSON.stringify(activeBoard));
+
+      updatedBoard.columns[colIndex].tasks[taskIndex].subtasks[
+        subtaskIndex
+      ].isCompleted = isCompleted;
+
+      return boardAdapter.updateOne(
+        {
+          id: state.activeBoardId!,
+          changes: updatedBoard,
+        },
+        state
+      );
     }
-
-    // Update the specific task in the board's tasks array
-    const updatedTasks = board.tasks.map((task) =>
-      task.id === updatedTask.id ? updatedTask : task
-    );
-
-    return boardAdapter.updateOne(
-      {
-        id: boardId,
-        changes: { tasks: updatedTasks },
-      },
-      state
-    );
-  })
+  )
 );
 
 export const {

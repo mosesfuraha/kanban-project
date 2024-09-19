@@ -9,8 +9,16 @@ import { Task, Subtask } from '../../models/board.model';
 })
 export class ModalComponent implements OnInit {
   @Input() task: Task | null = null;
+  @Input() colIndex: number = 0;
+  @Input() taskIndex: number = 0;
+
   @Output() closeModal = new EventEmitter<void>();
-  @Output() subtaskToggled = new EventEmitter<Subtask>();
+  @Output() subtaskToggled = new EventEmitter<{
+    colIndex: number;
+    taskIndex: number;
+    subtaskIndex: number;
+    isCompleted: boolean;
+  }>();
 
   subtaskForm: FormGroup;
 
@@ -31,25 +39,29 @@ export class ModalComponent implements OnInit {
   }
 
   setSubtasks() {
-    this.task?.subtasks.forEach((subtask) => {
-      this.subtasks.push(
-        this.fb.group({
-          title: [subtask.title],
-          isCompleted: [subtask.isCompleted],
-        })
-      );
-    });
+    const subtaskFGs = this.task?.subtasks.map((subtask) =>
+      this.fb.group({
+        title: [subtask.title],
+        isCompleted: [subtask.isCompleted],
+      })
+    );
+
+    if (subtaskFGs) {
+      this.subtaskForm.setControl('subtasks', this.fb.array(subtaskFGs));
+    }
   }
 
   toggleSubtaskCompletion(index: number) {
     const subtask = this.subtasks.at(index);
     const isCompleted = subtask.get('isCompleted')?.value;
     subtask.patchValue({ isCompleted: !isCompleted });
-    const updatedSubtask:any = {
-      ...this.task?.subtasks[index],
+
+    this.subtaskToggled.emit({
+      colIndex: this.colIndex,
+      taskIndex: this.taskIndex,
+      subtaskIndex: index,
       isCompleted: !isCompleted,
-    };
-    this.subtaskToggled.emit(updatedSubtask);
+    });
   }
 
   getCompletedSubtaskCount(): number {
