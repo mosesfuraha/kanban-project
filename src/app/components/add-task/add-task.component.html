@@ -1,8 +1,7 @@
-<div *ngIf="showForm" class="bg-white p-6 rounded-lg shadow-lg w-full">
+<div *ngIf="showForm" class="bg-white p-6 rounded-lg  w-full">
   <h2 class="text-xl font-bold mb-4">Add New Task</h2>
 
   <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
-    <!-- Title -->
     <div class="mb-4">
       <input
         formControlName="title"
@@ -21,7 +20,6 @@
       </div>
     </div>
 
-    <!-- Description -->
     <div class="mb-4">
       <p class="text-gray-600 mb-1">Description</p>
       <textarea
@@ -42,7 +40,6 @@
       </div>
     </div>
 
-    <!-- Subtasks -->
     <div class="mb-4">
       <p class="text-gray-600 mb-1">Subtasks</p>
       <div formArrayName="subtasks">
@@ -79,22 +76,26 @@
       </button>
     </div>
 
-    <!-- Status -->
     <div class="mb-4">
-      <p class="text-gray-600 mb-2">Current Status</p>
+      <p class="text-gray-600 mb-1">Column Status</p>
       <select
-        formControlName="status"
+        formControlName="columnId"
         class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-300"
       >
-        <option value="todo">Todo</option>
-        <option value="doing">Doing</option>
-        <option value="done">Done</option>
+        <option *ngFor="let column of columns" [value]="column.id">
+          {{ column.name }}
+        </option>
       </select>
       <div
-        *ngIf="status?.invalid && (status?.touched || status?.dirty)"
+        *ngIf="
+          taskForm.get('columnId')?.invalid &&
+          (taskForm.get('columnId')?.touched || taskForm.get('columnId')?.dirty)
+        "
         class="text-red-500"
       >
-        <small *ngIf="status?.errors?.['required']">Status is required.</small>
+        <small *ngIf="taskForm.get('columnId')?.errors?.['required']">
+          Column selection is required.
+        </small>
       </div>
     </div>
 

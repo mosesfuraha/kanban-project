@@ -1,28 +1,46 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { v4 as uuidv4 } from 'uuid';
 import { addTask } from '../../store/actions/board.action';
-import { Task } from '../../models/board.model';
+import { Column, Task } from '../../models/board.model';
+import { TaskService } from '../../services/task.service';
 
 @Component({
   selector: 'app-add-task',
   templateUrl: './add-task.component.html',
   styleUrls: ['./add-task.component.css'],
 })
-export class AddTaskComponent {
+export class AddTaskComponent implements OnInit {
   taskForm: FormGroup;
   showForm: boolean = true;
 
-  boardName: string = 'Platform Launch';
-  columnId: string = '7446e088-0b9f-44da-9fc4-5de506b4649e';
+  boardName: string | null = null;
+  columns: Column[] = [];
+  selectedColumnId: string | null = null;
 
-  constructor(private fb: FormBuilder, private store: Store) {
+  constructor(
+    private fb: FormBuilder,
+    private store: Store,
+    private taskService: TaskService
+  ) {
     this.taskForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', Validators.required],
       subtasks: this.fb.array([this.fb.control('', Validators.required)]),
       status: ['todo', Validators.required],
+      columnId: ['', Validators.required],
+    });
+  }
+
+  ngOnInit(): void {
+    this.taskService.selectedBoard$.subscribe((board) => {
+      if (board) {
+        this.boardName = board.name;
+        this.columns = board.columns;
+        console.log('Selected Board Name:', this.boardName);
+        console.log('Columns:', this.columns);
+      }
     });
   }
 
@@ -51,6 +69,13 @@ export class AddTaskComponent {
   }
 
   onSubmit() {
+    this.selectedColumnId = this.taskForm.value.columnId;
+
+    if (!this.boardName || !this.selectedColumnId) {
+      console.error('Board name or Column ID is missing!');
+      return;
+    }
+
     if (this.taskForm.valid) {
       const newTask: Task = {
         id: uuidv4(),
@@ -64,24 +89,32 @@ export class AddTaskComponent {
         })),
       };
 
-      const newColIndex = 0;
-
-      this.store.dispatch(
-        addTask({
-          boardName: this.boardName,
-          task: newTask,
-          newColIndex: newColIndex,
-        })
+      const selectedBoard = this.taskService.selectedBoardSource.value;
+      const newColIndex = selectedBoard?.columns.findIndex(
+        (column) => column.id === this.selectedColumnId
       );
 
-      this.taskForm.reset({
-        title: '',
-        description: '',
-        subtasks: [''],
-        status: 'todo',
-      });
-      this.subtasks.clear();
-      this.showForm = false;
+      if (newColIndex !== undefined && newColIndex >= 0) {
+        this.store.dispatch(
+          addTask({
+            boardName: this.boardName,
+            task: newTask,
+            newColIndex: newColIndex,
+          })
+        );
+
+        this.taskForm.reset({
+          title: '',
+          description: '',
+          subtasks: [''],
+          status: 'todo',
+          columnId: '',
+        });
+        this.subtasks.clear();
+        this.showForm = false;
+      } else {
+        console.error('Column ID does not exist in the selected board!');
+      }
     } else {
       this.taskForm.markAllAsTouched();
     }
