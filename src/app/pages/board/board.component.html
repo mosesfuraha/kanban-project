@@ -1,6 +1,6 @@
 <div class="flex space-x-16 p-4 font-sans overflow-x-auto">
   <div
-    *ngFor="let column of selectedBoard?.columns"
+    *ngFor="let column of selectedBoard?.columns; let columnIndex = index"
     class="w-[250px] flex-shrink-0"
   >
     <h2 class="text-[12px] font-semibold text-dark-text mb-4">
@@ -8,13 +8,13 @@
     </h2>
     <ul class="space-y-6 cursor-pointer">
       <button
-        (click)="openTaskModal(task)"
-        *ngFor="let task of column.tasks"
+        *ngFor="let task of column.tasks; let taskIndex = index"
         class="rounded-lg shadow-md p-4"
         [ngClass]="{
           'bg-light-white text-gray-800': !(isDarkMode$ | async),
           'bg-dark-tertiary text-light-primary': (isDarkMode$ | async)
         }"
+        (click)="openTaskModal(columnIndex, taskIndex, task)"
       >
         <p
           class="text-sm font-semibold text-dark-tertiary hover:text-[#635FC7] w-[250px]"
@@ -32,6 +32,7 @@
       </button>
     </ul>
   </div>
+
   <div
     class="w-[250px] h-[500px] rounded-lg flex justify-center items-center flex-shrink-0"
     [ngClass]="{
@@ -63,9 +64,14 @@
     </ul>
   </div>
 </div>
+
+<!-- Modal Component -->
 <app-modal
   *ngIf="isModalOpen"
   [task]="selectedTask"
+  [colIndex]="selectedColIndex"
+  [taskIndex]="selectedTaskIndex"
+  [activeBoard]="selectedBoard"
   (closeModal)="closeModal()"
   (subtaskToggled)="handleSubtaskToggled($event, selectedTask!)"
 ></app-modal>

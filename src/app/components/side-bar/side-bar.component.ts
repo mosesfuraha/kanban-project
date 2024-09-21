@@ -1,11 +1,12 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { toggleTheme } from './../../theme/theme.actions';
 import { ThemeState } from '../../theme/theme.reducers';
 import { Board } from '../../models/board.model';
 import { selectAllBoardsFromStore } from '../../store/selectors/selectors';
-import { TaskService } from '../../services/task.service'; // Import the TaskService
+import { TaskService } from '../../services/task.service';
+import { setActiveBoard } from '../../store/actions/board.action';
 
 @Component({
   selector: 'app-side-bar',
@@ -32,45 +33,44 @@ export class SideBarComponent implements OnInit {
   ngOnInit(): void {
     this.boards$.subscribe((boards) => {
       if (boards && boards.length > 0) {
-        const initialBoard = boards[0];
-        this.activeItem = initialBoard.name;
-        this.boardSelected.emit(initialBoard);
+        const activeBoard = this.getActiveBoardFromStore();
+        const boardToActivate = activeBoard ?? boards[0]; // Fallback to the first board only if no active board is set
 
-        // Set the selected board in TaskService
-        this.taskService.setSelectedBoard(initialBoard);
+        this.activeItem = boardToActivate.name;
+        this.boardSelected.emit(boardToActivate);
+        this.taskService.setSelectedBoard(boardToActivate);
+        this.store.dispatch(setActiveBoard({ boardId: boardToActivate.id }));
 
-        // Set the default column (first column as 'Todo') in TaskService
-        if (initialBoard.columns && initialBoard.columns.length > 0) {
-          this.taskService.setSelectedColumnId(initialBoard.columns[0].id); // Default to 'Todo'
-        }
-
-        // Log board and column details
-        console.log('Active board ID:', initialBoard.id);
-        console.log('Active board Name:', initialBoard.name);
-
-        if (initialBoard.columns) {
-          console.log('Column IDs:');
-          initialBoard.columns.forEach((column) => {
-            console.log('Column ID:', column.id);
-          });
+        if (boardToActivate.columns && boardToActivate.columns.length > 0) {
+          this.taskService.setSelectedColumnId(boardToActivate.columns[0].id);
         }
       }
     });
+  }
+
+  // Helper method to get the active board from the store or local state
+  getActiveBoardFromStore(): Board | null {
+    let activeBoard: Board | null = null;
+    this.store
+      .select('boards')
+      .pipe(take(1))
+      .subscribe((state) => {
+        activeBoard = state.activeBoard;
+      });
+    return activeBoard;
   }
 
   setActive(board: Board): void {
     this.activeItem = board.name;
     this.boardSelected.emit(board);
 
-    // Set the selected board in TaskService
     this.taskService.setSelectedBoard(board);
+    this.store.dispatch(setActiveBoard({ boardId: board.id }));
 
-    // Set the first column as selected by default
     if (board.columns.length > 0) {
       this.taskService.setSelectedColumnId(board.columns[0].id);
     }
 
-    // Log board and column details
     console.log('Selected board ID:', board.id);
     console.log('Selected board Name:', board.name);
     board.columns.forEach((column) => {
@@ -80,7 +80,6 @@ export class SideBarComponent implements OnInit {
 
   selectColumn(columnId: string): void {
     this.taskService.setSelectedColumnId(columnId);
-    console.log('Selected Column ID:', columnId);
   }
 
   isActive(boardName: string): boolean {

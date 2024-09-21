@@ -16,7 +16,6 @@ export const addTask = createAction(
   props<{ boardName: string; task: Task; newColIndex: number }>()
 );
 
-
 export const setSubtaskCompleted = createAction(
   '[Board] Toggle Subtask Completion',
   props<{
@@ -24,8 +23,19 @@ export const setSubtaskCompleted = createAction(
     taskIndex: number;
     subtaskIndex: number;
     isCompleted: boolean;
+    subtaskId: string;
   }>()
 );
+export const setTaskStatus = createAction(
+  '[Board] Set Task Status',
+  props<{
+    colIndex: number;
+    taskIndex: number;
+    newStatus: string;
+    boardId: string;
+  }>()
+);
+
 
 export const setActiveBoard = createAction(
   '[Board] Set Active Board',

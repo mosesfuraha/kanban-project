@@ -18,13 +18,15 @@ export class BoardComponent implements OnInit {
 
   isModalOpen = false;
   selectedTask: Task | null = null;
+  selectedColIndex: number = 0;
+  selectedTaskIndex: number  = 0;
 
   constructor(
     private store: Store<{
       theme: { isDarkMode: boolean };
       boards: BoardState;
     }>,
-    private cdr: ChangeDetectorRef 
+    private cdr: ChangeDetectorRef
   ) {
     this.isDarkMode$ = this.store.select((state) => state.theme.isDarkMode);
     this.boards$ = this.store.select(selectAllBoardsFromStore);
@@ -48,10 +50,11 @@ export class BoardComponent implements OnInit {
     return task.subtasks ? task.subtasks.length : 0;
   }
 
-  openTaskModal(task: Task) {
+  openTaskModal(columnIndex: number, taskIndex: number, task: Task) {
     this.selectedTask = task;
+    this.selectedColIndex = columnIndex; 
+    this.selectedTaskIndex = taskIndex; 
     this.isModalOpen = true;
-    this.cdr.detectChanges();
   }
 
   closeModal() {
@@ -68,12 +71,15 @@ export class BoardComponent implements OnInit {
     },
     task: Task
   ): void {
+    const subtaskId = task.subtasks[event.subtaskIndex].id;
+
     this.store.dispatch(
       BoardActions.setSubtaskCompleted({
         colIndex: event.colIndex,
         taskIndex: event.taskIndex,
         subtaskIndex: event.subtaskIndex,
         isCompleted: event.isCompleted,
+        subtaskId: subtaskId,
       })
     );
   }
