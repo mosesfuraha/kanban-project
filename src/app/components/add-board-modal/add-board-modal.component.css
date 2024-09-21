@@ -1,0 +1,19 @@
+.modal-overlay {
+  z-index: 50;
+}
+
+.modal-container {
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+}
+
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

@@ -11,6 +11,13 @@ export const loadBoardsFailure = createAction(
   '[Board] Load Boards Failure',
   props<{ error: any }>()
 );
+
+export const addBoard = createAction(
+  '[Board] Add Board',
+  props<{ board: Board }>()
+);
+
+
 export const addTask = createAction(
   '[Board] Add Task',
   props<{ boardName: string; task: Task; newColIndex: number }>()

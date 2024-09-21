@@ -19,6 +19,9 @@ export const boardReducer = createReducer(
   on(BoardActions.loadBoardsSuccess, (state, { boards }) => {
     return boardAdapter.setAll(boards, state);
   }),
+  on(BoardActions.addBoard, (state, { board }) => {
+    return boardAdapter.addOne(board, state);
+  }),
 
   on(BoardActions.setActiveBoard, (state, { boardId }) => {
     return {
@@ -104,7 +107,6 @@ export const boardReducer = createReducer(
 
       if (!activeBoard) return state;
 
-      // Map the columns, tasks, and subtasks immutably
       const updatedColumns = activeBoard.columns.map((column, cIndex) => {
         if (cIndex === colIndex) {
           const updatedTasks = column.tasks.map((task, tIndex) => {

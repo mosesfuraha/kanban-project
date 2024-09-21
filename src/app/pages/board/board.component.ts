@@ -1,10 +1,13 @@
-import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { Board, Subtask, Task } from '../../models/board.model';
+import { Board, Task } from '../../models/board.model';
 import * as BoardActions from '../../store/actions/board.action';
 import { BoardState } from '../../store/reducers/reducer.board';
-import { selectAllBoardsFromStore } from '../../store/selectors/selectors';
+import {
+  selectActiveBoard,
+  selectAllBoardsFromStore,
+} from '../../store/selectors/selectors';
 
 @Component({
   selector: 'app-board',
@@ -14,35 +17,44 @@ import { selectAllBoardsFromStore } from '../../store/selectors/selectors';
 export class BoardComponent implements OnInit {
   isDarkMode$: Observable<boolean>;
   boards$: Observable<Board[]>;
-  @Input() selectedBoard: Board | null = null;
+  selectedBoard$: Observable<Board | null>;
 
   isModalOpen = false;
   selectedTask: Task | null = null;
   selectedColIndex: number = 0;
-  selectedTaskIndex: number  = 0;
+  selectedTaskIndex: number = 0;
 
   constructor(
     private store: Store<{
       theme: { isDarkMode: boolean };
       boards: BoardState;
-    }>,
-    private cdr: ChangeDetectorRef
+    }>
   ) {
     this.isDarkMode$ = this.store.select((state) => state.theme.isDarkMode);
     this.boards$ = this.store.select(selectAllBoardsFromStore);
+    this.selectedBoard$ = this.store.select(selectActiveBoard);
+
+    // Log the selected board to check the data
+    this.selectedBoard$.subscribe((board) => {
+      console.log('Selected Board:', board);
+    });
   }
 
   ngOnInit(): void {
     this.store.dispatch(BoardActions.loadBoards());
-  }
 
-  onBoardSelected(board: Board): void {
-    this.selectedBoard = board;
+    this.boards$.subscribe((boards) => {
+      if (boards.length > 0) {
+        this.store.dispatch(
+          BoardActions.setActiveBoard({ boardId: boards[0].id })
+        );
+      }
+    });
   }
 
   getCompletedSubtaskCount(task: Task): number {
     return task.subtasks
-      ? task.subtasks.filter((subtask: Subtask) => subtask.isCompleted).length
+      ? task.subtasks.filter((subtask) => subtask.isCompleted).length
       : 0;
   }
 
@@ -52,8 +64,8 @@ export class BoardComponent implements OnInit {
 
   openTaskModal(columnIndex: number, taskIndex: number, task: Task) {
     this.selectedTask = task;
-    this.selectedColIndex = columnIndex; 
-    this.selectedTaskIndex = taskIndex; 
+    this.selectedColIndex = columnIndex;
+    this.selectedTaskIndex = taskIndex;
     this.isModalOpen = true;
   }
 

@@ -1,10 +1,13 @@
 <div class="flex space-x-16 p-4 font-sans overflow-x-auto">
   <div
-    *ngFor="let column of selectedBoard?.columns; let columnIndex = index"
+    *ngFor="
+      let column of (selectedBoard$ | async)?.columns;
+      let columnIndex = index
+    "
     class="w-[250px] flex-shrink-0"
   >
     <h2 class="text-[12px] font-semibold text-dark-text mb-4">
-      {{ column.name }} ({{ column.tasks.length }})
+      {{ column?.name }} ({{ column?.tasks?.length || 0 }})
     </h2>
     <ul class="space-y-6 cursor-pointer">
       <button
@@ -65,13 +68,11 @@
   </div>
 </div>
 
-<!-- Modal Component -->
 <app-modal
   *ngIf="isModalOpen"
   [task]="selectedTask"
   [colIndex]="selectedColIndex"
   [taskIndex]="selectedTaskIndex"
-  [activeBoard]="selectedBoard"
   (closeModal)="closeModal()"
   (subtaskToggled)="handleSubtaskToggled($event, selectedTask!)"
 ></app-modal>

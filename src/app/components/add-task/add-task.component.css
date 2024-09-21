@@ -1,0 +1,9 @@
+.modal-overlay {
+  z-index: 50;
+}
+
+.modal-container {
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+}

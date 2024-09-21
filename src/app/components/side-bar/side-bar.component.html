@@ -60,6 +60,7 @@
 
     <div
       class="flex items-center cursor-pointer w-[90%] p-3 rounded-tr-full rounded-br-full text-[#635FC7] mb-[8rem]"
+      (click)="openCreateBoardModal()"
     >
       <img
         src="assets/icon-board.svg"
@@ -106,3 +107,7 @@
     </div>
   </div>
 </section>
+<app-add-board-modal
+  *ngIf="isCreateBoardModalOpen"
+  (close)="closeCreateBoardModal()"
+></app-add-board-modal>

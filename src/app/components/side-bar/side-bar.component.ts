@@ -21,6 +21,7 @@ export class SideBarComponent implements OnInit {
 
   @Output() sidebarToggled = new EventEmitter<boolean>();
   @Output() boardSelected = new EventEmitter<Board>();
+  isCreateBoardModalOpen: boolean = false;
 
   constructor(
     private store: Store<{ theme: ThemeState; boards: any }>,
@@ -93,5 +94,13 @@ export class SideBarComponent implements OnInit {
 
   toggleTheme(): void {
     this.store.dispatch(toggleTheme());
+  }
+
+  openCreateBoardModal(): void {
+    this.isCreateBoardModalOpen = true;
+  }
+
+  closeCreateBoardModal(): void {
+    this.isCreateBoardModalOpen = false;
   }
 }

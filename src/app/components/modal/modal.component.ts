@@ -6,8 +6,7 @@ import {
   setSubtaskCompleted,
   setTaskStatus,
 } from '../../store/actions/board.action';
-import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+
 import { AppState } from '../../models/app.state';
 
 @Component({
@@ -73,15 +72,6 @@ export class ModalComponent implements OnInit {
 
     if (subtaskData && this.activeBoard) {
       subtask.patchValue({ isCompleted: !isCompleted });
-
-      const column = this.activeBoard.columns[this.colIndex];
-      const columnName = column ? column.name : 'Unknown Column';
-
-      console.log(
-        `Active board: ${this.activeBoard.name}, Column: ${columnName}, Column Index: ${this.colIndex}, Task Index: ${this.taskIndex}, Subtask Index: ${index}`
-      );
-
-      // Dispatch the action to update the subtask's completion status
       this.store.dispatch(
         setSubtaskCompleted({
           colIndex: this.colIndex,
@@ -101,6 +91,8 @@ export class ModalComponent implements OnInit {
     this.selectedStatus = newStatus;
 
     if (this.task && this.activeBoard) {
+      console.log(`Active board ID: ${this.activeBoard.id}`);
+
       this.store.dispatch(
         setTaskStatus({
           colIndex: this.colIndex,

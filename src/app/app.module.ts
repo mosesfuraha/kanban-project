@@ -21,6 +21,7 @@ import { BoardEffects } from './store/effects/board.effect';
 import { ModalComponent } from './components/modal/modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AddTaskComponent } from './components/add-task/add-task.component';
+import { AddBoardModalComponent } from './components/add-board-modal/add-board-modal.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,6 +31,7 @@ import { AddTaskComponent } from './components/add-task/add-task.component';
     TaskComponent,
     ModalComponent,
     AddTaskComponent,
+    AddBoardModalComponent,
   ],
   imports: [
     ReactiveFormsModule,
