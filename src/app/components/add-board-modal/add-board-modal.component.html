@@ -12,7 +12,10 @@
       &times;
     </button>
 
-    <h2 class="text-xl font-bold mb-4">Add New Board</h2>
+    <!-- Conditionally set title -->
+    <h2 class="text-xl font-bold mb-4">
+      {{ existingBoard ? "Edit Board" : "Add New Board" }}
+    </h2>
 
     <form [formGroup]="addBoardForm" (ngSubmit)="onSubmit()">
       <div class="mb-6">
@@ -82,11 +85,12 @@
       </div>
 
       <div>
+        <!-- Conditionally set button text -->
         <button
           type="submit"
           class="w-full bg-[#635FC7] text-white p-2 rounded-full hover:bg-blue-600 transition-colors font-semibold"
         >
-          Create New Board
+          {{ existingBoard ? "Save Changes" : "Create New Board" }}
         </button>
       </div>
     </form>

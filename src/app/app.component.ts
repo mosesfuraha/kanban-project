@@ -1,4 +1,9 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  OnInit,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import * as ThemeActions from './theme/theme.actions';
@@ -14,7 +19,10 @@ export class AppComponent implements OnInit {
   isSidebarVisible: boolean = true;
   selectedBoard: Board | null = null;
 
-  constructor(private store: Store<{ theme: { isDarkMode: boolean } }>) {
+  constructor(
+    private store: Store<{ theme: { isDarkMode: boolean } }>,
+    private cdr: ChangeDetectorRef
+  ) {
     this.isDarkMode$ = this.store.select((state) => state.theme.isDarkMode);
   }
 
@@ -26,6 +34,8 @@ export class AppComponent implements OnInit {
 
     this.isDarkMode$.subscribe((isDark) => {
       localStorage.setItem('isDarkMode', JSON.stringify(isDark));
+
+      this.cdr.detectChanges();
     });
 
     this.updateSidebarVisibility(window.innerWidth);
@@ -47,6 +57,7 @@ export class AppComponent implements OnInit {
   toggleSidebar() {
     this.isSidebarVisible = !this.isSidebarVisible;
   }
+
   onBoardSelected(board: Board): void {
     this.selectedBoard = board;
   }

@@ -22,7 +22,10 @@ export const addTask = createAction(
   '[Board] Add Task',
   props<{ boardName: string; task: Task; newColIndex: number }>()
 );
-
+export const updateBoard = createAction(
+  '[Board] Update Board',
+  props<{ board: Board }>()
+);
 export const setSubtaskCompleted = createAction(
   '[Board] Toggle Subtask Completion',
   props<{

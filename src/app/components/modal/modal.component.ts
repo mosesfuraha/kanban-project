@@ -88,8 +88,6 @@ export class ModalComponent implements OnInit {
     this.selectedStatus = newStatus;
 
     if (this.task && this.activeBoard) {
-      console.log(`Active board ID: ${this.activeBoard.id}`);
-
       this.store.dispatch(
         setTaskStatus({
           colIndex: this.colIndex,

@@ -60,6 +60,15 @@ export const boardReducer = createReducer(
       state
     );
   }),
+  on(BoardActions.updateBoard, (state, { board }) => {
+    return boardAdapter.updateOne(
+      {
+        id: board.id,
+        changes: board,
+      },
+      state
+    );
+  }),
 
   on(
     BoardActions.setSubtaskCompleted,

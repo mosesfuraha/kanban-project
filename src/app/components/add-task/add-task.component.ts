@@ -38,8 +38,6 @@ export class AddTaskComponent implements OnInit {
       if (board) {
         this.boardName = board.name;
         this.columns = board.columns;
-        console.log('Selected Board Name:', this.boardName);
-        console.log('Columns:', this.columns);
       }
     });
   }
