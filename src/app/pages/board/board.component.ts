@@ -34,10 +34,10 @@ export class BoardComponent implements OnInit {
     this.boards$ = this.store.select(selectAllBoardsFromStore);
     this.selectedBoard$ = this.store.select(selectActiveBoard);
 
-    // Log the selected board to check the data
-    this.selectedBoard$.subscribe((board) => {
-      console.log('Selected Board:', board);
-    });
+    // // Log the selected board to check the data
+    // this.selectedBoard$.subscribe((board) => {
+    //   console.log('Selected Board:', board);
+    // });
   }
 
   ngOnInit(): void {

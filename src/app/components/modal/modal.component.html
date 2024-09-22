@@ -39,9 +39,13 @@
         [value]="selectedStatus"
         (change)="handleStatusChange($event)"
       >
-        <option value="Todo">Todo</option>
-        <option value="Doing">Doing</option>
-        <option value="Done">Done</option>
+        <option
+          *ngFor="let column of activeBoard?.columns"
+          [value]="column.name"
+          [selected]="column.name === selectedStatus"
+        >
+          {{ column.name }}
+        </option>
       </select>
     </div>
   </div>

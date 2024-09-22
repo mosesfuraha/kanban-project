@@ -34,18 +34,15 @@ export class ModalComponent implements OnInit {
   constructor(private fb: FormBuilder, private store: Store<AppState>) {
     this.subtaskForm = this.fb.group({
       subtasks: this.fb.array([]),
+      selectedStatus: '',
     });
   }
 
   ngOnInit(): void {
     if (this.task) {
       this.setSubtasks();
-      this.selectedStatus = this.capitalizeStatus(this.task?.status ?? 'todo');
+      this.selectedStatus = this.task.status;
     }
-  }
-
-  capitalizeStatus(status: string): string {
-    return status.charAt(0).toUpperCase() + status.slice(1);
   }
 
   get subtasks() {
@@ -86,7 +83,7 @@ export class ModalComponent implements OnInit {
 
   handleStatusChange(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
-    const newStatus = this.capitalizeStatus(selectElement.value);
+    const newStatus = selectElement.value;
 
     this.selectedStatus = newStatus;
 

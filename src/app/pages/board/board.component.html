@@ -1,9 +1,6 @@
 <div class="flex space-x-16 p-4 font-sans overflow-x-auto">
   <div
-    *ngFor="
-      let column of (selectedBoard$ | async)?.columns;
-      let columnIndex = index
-    "
+    *ngFor="let column of (selectedBoard$ | async)?.columns; let columnIndex = index"
     class="w-[250px] flex-shrink-0"
   >
     <h2 class="text-[12px] font-semibold text-dark-text mb-4">
@@ -35,44 +32,15 @@
       </button>
     </ul>
   </div>
-
-  <div
-    class="w-[250px] h-[500px] rounded-lg flex justify-center items-center flex-shrink-0"
-    [ngClass]="{
-      'bg-[#E4EBFA] text-gray-800': !(isDarkMode$ | async),
-      'bg-dark-tertiary text-light-primary': (isDarkMode$ | async)
-    }"
-  >
-    <ul class="space-y-6">
-      <div class="p-4 flex items-center space-x-2 cursor-pointer">
-        <p
-          class="text-lg font-bold text-dark-text hover:text-light-primary"
-          [ngClass]="{
-            'text-dark-secondary': !(isDarkMode$ | async),
-            'text-light-white hover:text-light-primary': (isDarkMode$ | async)
-          }"
-        >
-          +
-        </p>
-        <p
-          class="text-lg font-bold text-dark-text hover:text-light-primary"
-          [ngClass]="{
-            'text-dark-secondary': !(isDarkMode$ | async),
-            'text-light-white hover:text-light-primary': (isDarkMode$ | async)
-          }"
-        >
-          New Column
-        </p>
-      </div>
-    </ul>
-  </div>
 </div>
 
+<!-- Pass data to the modal -->
 <app-modal
-  *ngIf="isModalOpen"
-  [task]="selectedTask"
   [colIndex]="selectedColIndex"
   [taskIndex]="selectedTaskIndex"
+  [task]="selectedTask"
+  [activeBoard]="(selectedBoard$ | async)"
+  *ngIf="isModalOpen"
   (closeModal)="closeModal()"
   (subtaskToggled)="handleSubtaskToggled($event, selectedTask!)"
 ></app-modal>

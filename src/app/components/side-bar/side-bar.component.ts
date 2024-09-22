@@ -35,7 +35,7 @@ export class SideBarComponent implements OnInit {
     this.boards$.subscribe((boards) => {
       if (boards && boards.length > 0) {
         const activeBoard = this.getActiveBoardFromStore();
-        const boardToActivate = activeBoard ?? boards[0]; // Fallback to the first board only if no active board is set
+        const boardToActivate = activeBoard ?? boards[0];
 
         this.activeItem = boardToActivate.name;
         this.boardSelected.emit(boardToActivate);
@@ -49,7 +49,6 @@ export class SideBarComponent implements OnInit {
     });
   }
 
-  // Helper method to get the active board from the store or local state
   getActiveBoardFromStore(): Board | null {
     let activeBoard: Board | null = null;
     this.store
