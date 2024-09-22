@@ -1,5 +1,7 @@
-<div *ngIf="showForm" class="bg-white p-6 rounded-lg  w-full  ">
-  <h2 class="text-xl font-bold mb-4">Add New Task</h2>
+<div *ngIf="showForm" class="bg-white p-6 rounded-lg w-full">
+  <h2 class="text-xl font-bold mb-4">
+    {{ isEditMode ? "Edit Task" : "Add New Task" }}
+  </h2>
 
   <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
     <div class="mb-4">
@@ -34,9 +36,9 @@
         "
         class="text-red-500"
       >
-        <small *ngIf="description?.errors?.['required']"
-          >Description is required.</small
-        >
+        <small *ngIf="description?.errors?.['required']">
+          Description is required.
+        </small>
       </div>
     </div>
 
@@ -103,15 +105,15 @@
       type="submit"
       class="w-full bg-[#635FC7] text-white p-2 rounded-full hover:bg-blue-600 transition-colors"
     >
-      Create Task
+      {{ isEditMode ? "Save Changes" : "Create Task" }}
     </button>
   </form>
 </div>
 
-
-<div>
-  
-</div>
 <div *ngIf="!showForm" class="text-center">
-  <p class="text-lg font-semibold">Task created successfully!</p>
+  <p class="text-lg font-semibold">
+    {{
+      isEditMode ? "Task updated successfully!" : "Task created successfully!"
+    }}
+  </p>
 </div>

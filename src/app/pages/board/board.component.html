@@ -36,7 +36,6 @@
     </ul>
   </div>
 
-  <!-- Instead of calling async directly in the click event, use a local variable -->
   <div
     class="w-[250px] h-[500px] rounded-lg flex justify-center items-center flex-shrink-0"
     [ngClass]="{
@@ -70,6 +69,7 @@
   </div>
 </div>
 
+<!-- Task Modal -->
 <app-modal
   [colIndex]="selectedColIndex"
   [taskIndex]="selectedTaskIndex"
@@ -77,8 +77,29 @@
   [activeBoard]="selectedBoard$ | async"
   *ngIf="isModalOpen"
   (closeModal)="closeModal()"
-  (subtaskToggled)="handleSubtaskToggled($event, selectedTask!)"
+  (editTask)="openEditTaskModal($event)"
 ></app-modal>
+
+<!-- Edit Task Modal -->
+<div
+  *ngIf="isEditTaskModalOpen"
+  class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50"
+>
+  <div
+    class="p-6 w-[40%] overflow-auto hide-scrollbar max-h-[80vh] rounded-lg shadow-lg bg-white relative"
+  >
+    <button
+      class="absolute top-3 right-3 text-gray-600 hover:text-gray-800"
+      (click)="closeEditTaskModal()"
+    >
+      <img src="assets/icon-cross.svg" alt="Close" />
+    </button>
+    <app-add-task
+      [task]="selectedTaskForEdit"
+      (closeModal)="closeEditTaskModal()"
+    ></app-add-task>
+  </div>
+</div>
 
 <app-add-board-modal
   *ngIf="isBoardModalOpen"

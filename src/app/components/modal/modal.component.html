@@ -1,8 +1,72 @@
-<div class="modal-overlay">
-  <div class="modal-content p-6 bg-white shadow-lg rounded-lg w-[58%]">
-    <button class="close-button" (click)="onClose()">×</button>
+<div
+  class="modal-overlay"
+  (click)="onOverlayClick($event)"
+  [ngClass]="{
+    'bg-gray-900 bg-opacity-50': isDarkMode$ | async,
+    'bg-white bg-opacity-50': !(isDarkMode$ | async)
+  }"
+>
+  <div
+    class="modal-content p-6 shadow-lg rounded-lg w-[58%]"
+    [ngClass]="{
+      'bg-dark-secondary ': isDarkMode$ | async,
+      'bg-white ': !(isDarkMode$ | async)
+    }"
+    (click)="preventClose($event)"
+  >
+    <div class="flex justify-between items-center">
+      <h2
+        class="text-xl font-semibold mb-4"
+        [ngClass]="{
+          'text-dark-secondary': !(isDarkMode$ | async),
+          'text-light-white': (isDarkMode$ | async)
+        }"
+      >
+        {{ task?.title }}
+      </h2>
 
-    <h2 class="text-xl font-semibold mb-4">{{ task?.title }}</h2>
+      <div class="cursor-pointer relative" (click)="toggleModal()">
+        <img src="assets/icon-vertical-ellipsis.svg" alt="show-option-icon" />
+
+        <div
+          *ngIf="isModalOpen"
+          class="absolute right-0 mt-6 p-3 rounded shadow-xl w-40"
+          [ngClass]="{
+            'bg-light-white text-gray-800': !(isDarkMode$ | async),
+            'bg-dark-secondary text-light-primary shadow-md':
+              (isDarkMode$ | async)
+          }"
+        >
+          <button
+            class="w-full py-2 text-left px-3"
+            (click)="editCurrentTask()"
+          >
+            <p
+              class="text-sm"
+              [ngClass]="{
+                'text-dark-text': !(isDarkMode$ | async),
+                'text-light-primary': (isDarkMode$ | async)
+              }"
+            >
+              Edit Task
+            </p>
+          </button>
+
+          <button class="w-full py-2 text-left px-3 rounded">
+            <p
+              class="text-sm"
+              [ngClass]="{
+                'text-accent-danger': !(isDarkMode$ | async),
+                'text-red-600': (isDarkMode$ | async)
+              }"
+            >
+              Delete Task
+            </p>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <p class="mb-4">{{ task?.description }}</p>
 
     <p class="font-medium mb-4">
@@ -14,11 +78,15 @@
       <div class="space-y-2">
         <button
           *ngFor="let subtask of subtasks.controls; let i = index"
-          class="flex items-center space-x-2 bg-light-background p-4 w-full gap-5 rounded-lg cursor-pointer"
+          class="flex items-center space-x-2 p-4 w-full gap-5 rounded-lg cursor-pointer"
           (click)="toggleSubtaskCompletion(i)"
           [ngClass]="{
             'line-through text-gray-500 bg-gray-100':
-              subtask.get('isCompleted')?.value
+              subtask.get('isCompleted')?.value && !(isDarkMode$ | async),
+            'line-through ':
+              subtask.get('isCompleted')?.value && (isDarkMode$ | async),
+            'bg-light-background text-dark-tertiary': !(isDarkMode$ | async),
+            'bg-dark-tertiary text-light-white': (isDarkMode$ | async)
           }"
         >
           <input type="checkbox" [formControlName]="i" class="w-4 h-4" />
@@ -30,12 +98,24 @@
     </form>
 
     <div class="mt-4">
-      <label for="status" class="block text-sm font-medium text-gray-700 mb-3">
+      <label
+        for="status"
+        class="block text-sm font-medium mb-3"
+        [ngClass]="{
+          'text-gray-700': !(isDarkMode$ | async),
+          'text-light-primary': (isDarkMode$ | async)
+        }"
+      >
         Current Status:
       </label>
       <select
         id="status"
-        class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        class="mt-1 block w-full p-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        [ngClass]="{
+          'border-gray-300 text-gray-800 bg-white': !(isDarkMode$ | async),
+          'border-gray-600 text-light-primary bg-dark-secondary':
+            (isDarkMode$ | async)
+        }"
         [value]="selectedStatus"
         (change)="handleStatusChange($event)"
       >

@@ -16,16 +16,20 @@ export const addBoard = createAction(
   '[Board] Add Board',
   props<{ board: Board }>()
 );
-
-
-export const addTask = createAction(
-  '[Board] Add Task',
-  props<{ boardName: string; task: Task; newColIndex: number }>()
-);
 export const updateBoard = createAction(
   '[Board] Update Board',
   props<{ board: Board }>()
 );
+export const addTask = createAction(
+  '[Board] Add Task',
+  props<{ boardName: string; task: Task; newColIndex: number }>()
+);
+
+export const editTask = createAction(
+  '[Board] Edit Task',
+  props<{ boardId: string; colIndex: number; task: Task }>()
+);
+
 export const setSubtaskCompleted = createAction(
   '[Board] Toggle Subtask Completion',
   props<{
@@ -46,7 +50,6 @@ export const setTaskStatus = createAction(
   }>()
 );
 
-
 export const setActiveBoard = createAction(
   '[Board] Set Active Board',
   props<{ boardId: string }>()
@@ -65,9 +68,4 @@ export const updateBoardFailure = createAction(
 export const deleteBoardFailure = createAction(
   '[Board] Delete Board Failure',
   props<{ error: Board }>()
-);
-
-export const updateTask = createAction(
-  '[Board] Update Task',
-  props<{ boardId: string; updatedTask: Task }>()
 );

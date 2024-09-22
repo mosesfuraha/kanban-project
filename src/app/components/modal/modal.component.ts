@@ -6,8 +6,8 @@ import {
   setSubtaskCompleted,
   setTaskStatus,
 } from '../../store/actions/board.action';
-
 import { AppState } from '../../models/app.state';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-modal',
@@ -19,6 +19,11 @@ export class ModalComponent implements OnInit {
   @Input() colIndex: number = 0;
   @Input() taskIndex: number = 0;
   @Input() activeBoard: Board | null = null;
+  @Output() editTask = new EventEmitter<Task>();
+
+  isModalOpen = false;
+  isEditTaskModalOpen = false;
+  isDarkMode$: Observable<boolean>;
 
   @Output() closeModal = new EventEmitter<void>();
   @Output() subtaskToggled = new EventEmitter<{
@@ -30,8 +35,10 @@ export class ModalComponent implements OnInit {
 
   subtaskForm: FormGroup;
   selectedStatus: string = '';
+  selectedTaskForEdit: Task | null = null;
 
   constructor(private fb: FormBuilder, private store: Store<AppState>) {
+    this.isDarkMode$ = this.store.select((state) => state.theme.isDarkMode);
     this.subtaskForm = this.fb.group({
       subtasks: this.fb.array([]),
       selectedStatus: '',
@@ -50,13 +57,12 @@ export class ModalComponent implements OnInit {
   }
 
   setSubtasks() {
-    const subtaskFGs = this.task?.subtasks.map((subtask, index) => {
+    const subtaskFGs = this.task?.subtasks.map((subtask) => {
       return this.fb.group({
         title: [subtask.title],
         isCompleted: [subtask.isCompleted],
       });
     });
-
     if (subtaskFGs) {
       this.subtaskForm.setControl('subtasks', this.fb.array(subtaskFGs));
     }
@@ -84,7 +90,6 @@ export class ModalComponent implements OnInit {
   handleStatusChange(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
     const newStatus = selectElement.value;
-
     this.selectedStatus = newStatus;
 
     if (this.task && this.activeBoard) {
@@ -111,5 +116,35 @@ export class ModalComponent implements OnInit {
 
   onClose() {
     this.closeModal.emit();
+    this.isModalOpen = false;
+  }
+
+  toggleModal() {
+    this.isModalOpen = !this.isModalOpen;
+  }
+
+  preventClose(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
+  onOverlayClick(event: MouseEvent) {
+    this.onClose();
+  }
+
+  editCurrentTask() {
+    if (this.task) {
+      this.closeModal.emit();
+      this.editTask.emit(this.task);
+    }
+  }
+
+  onEditTask(task: Task) {
+    this.selectedTaskForEdit = task;
+    this.isEditTaskModalOpen = true;
+  }
+
+  closeEditTaskModal() {
+    this.selectedTaskForEdit = null;
+    this.isEditTaskModalOpen = false;
   }
 }

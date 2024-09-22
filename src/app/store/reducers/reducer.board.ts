@@ -30,6 +30,7 @@ export const boardReducer = createReducer(
     };
   }),
 
+  //reducer for adding new task
   on(BoardActions.addTask, (state, { boardName, task, newColIndex }) => {
     const board = Object.values(state.entities).find(
       (b) => b?.name === boardName
@@ -60,6 +61,36 @@ export const boardReducer = createReducer(
       state
     );
   }),
+
+  //reducer for  editing new task
+  on(BoardActions.editTask, (state, { boardId, colIndex, task }) => {
+    const board = state.entities[boardId || state.activeBoardId || ''];
+
+    if (!board) return state;
+
+    const updatedColumns = board.columns.map((column, index) => {
+      if (index === colIndex) {
+        return {
+          ...column,
+          tasks: column.tasks.map((t) =>
+            t.id === task.id ? { ...t, ...task } : t
+          ),
+        };
+      }
+      return column;
+    });
+
+    const updatedBoard = { ...board, columns: updatedColumns };
+
+    return boardAdapter.updateOne(
+      {
+        id: board.id,
+        changes: updatedBoard,
+      },
+      state
+    );
+  }),
+
   on(BoardActions.updateBoard, (state, { board }) => {
     return boardAdapter.updateOne(
       {

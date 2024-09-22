@@ -18,14 +18,16 @@ export class BoardComponent implements OnInit {
   isDarkMode$: Observable<boolean>;
   boards$: Observable<Board[]>;
   selectedBoard$: Observable<Board | null>;
-  activeBoard: Board | null = null; // Store active board here
+  activeBoard: Board | null = null;
 
-  isModalOpen = false;
-  isBoardModalOpen = false; // Track if board modal is open
+  isModalOpen = false; // For Task Modal
+  isEditTaskModalOpen = false; // For Edit Task Modal
+  isBoardModalOpen = false;
   selectedTask: Task | null = null;
   selectedColIndex: number = 0;
   selectedTaskIndex: number = 0;
-  selectedBoardForEdit: Board | null = null; // Hold the board being edited
+  selectedBoardForEdit: Board | null = null;
+  selectedTaskForEdit: Task | null = null; // Task for editing
 
   constructor(
     private store: Store<{
@@ -41,7 +43,6 @@ export class BoardComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(BoardActions.loadBoards());
 
-    // Store the active board value in activeBoard property
     this.selectedBoard$.subscribe((board) => {
       this.activeBoard = board;
     });
@@ -65,23 +66,39 @@ export class BoardComponent implements OnInit {
     return task.subtasks ? task.subtasks.length : 0;
   }
 
+  // Open Task Modal
   openTaskModal(columnIndex: number, taskIndex: number, task: Task) {
     this.selectedTask = task;
     this.selectedColIndex = columnIndex;
     this.selectedTaskIndex = taskIndex;
-    this.isModalOpen = true;
+    this.isModalOpen = true; // Show task modal
+    this.isEditTaskModalOpen = false; // Ensure edit modal is closed
+  }
+
+  // Open Edit Task Modal
+  openEditTaskModal(task: Task) {
+    this.selectedTaskForEdit = task;
+    this.isEditTaskModalOpen = true; // Show edit task modal
+    this.isModalOpen = false; // Close task modal
+  }
+
+  // Close Task Modal
+  closeModal() {
+    this.isModalOpen = false;
+    this.selectedTask = null;
+  }
+
+  // Close Edit Task Modal
+  closeEditTaskModal() {
+    this.isEditTaskModalOpen = false;
+    this.selectedTaskForEdit = null;
   }
 
   openBoardEditModal(board: Board | null) {
     if (board) {
-      this.selectedBoardForEdit = board; // Set the selected board for edit
-      this.isBoardModalOpen = true; // Open the board edit modal
+      this.selectedBoardForEdit = board;
+      this.isBoardModalOpen = true;
     }
-  }
-
-  closeModal() {
-    this.isModalOpen = false;
-    this.selectedTask = null;
   }
 
   closeBoardModal() {
