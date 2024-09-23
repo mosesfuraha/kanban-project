@@ -74,28 +74,28 @@
       {{ getTotalSubtaskCount() }} subtasks)
     </p>
 
-    <form [formGroup]="subtaskForm">
-      <div class="space-y-2">
-        <button
-          *ngFor="let subtask of subtasks.controls; let i = index"
-          class="flex items-center space-x-2 p-4 w-full gap-5 rounded-lg cursor-pointer"
-          (click)="toggleSubtaskCompletion(i)"
-          [ngClass]="{
-            'line-through text-gray-500 bg-gray-100':
-              subtask.get('isCompleted')?.value && !(isDarkMode$ | async),
-            'line-through ':
-              subtask.get('isCompleted')?.value && (isDarkMode$ | async),
-            'bg-light-background text-dark-tertiary': !(isDarkMode$ | async),
-            'bg-dark-tertiary text-light-white': (isDarkMode$ | async)
-          }"
-        >
-          <input type="checkbox" [formControlName]="i" class="w-4 h-4" />
-          <label class="text-sm font-semibold">{{
-            subtask.get("title")?.value
-          }}</label>
-        </button>
-      </div>
-    </form>
+  <form [formGroup]="subtaskForm">
+  <div class="space-y-2" formArrayName="subtasks">
+    <div
+      *ngFor="let subtask of subtasks.controls; let i = index"
+      [formGroupName]="i"
+      class="flex items-center space-x-2 p-4 w-full gap-5 rounded-lg cursor-pointer"
+      (click)="toggleSubtaskCompletion(i)"
+      [ngClass]="{
+        'line-through text-gray-500 bg-gray-100':
+          subtask.get('isCompleted')?.value && !(isDarkMode$ | async),
+        'line-through ':
+          subtask.get('isCompleted')?.value && (isDarkMode$ | async),
+        'bg-light-background text-dark-tertiary': !(isDarkMode$ | async),
+        'bg-dark-tertiary text-light-white': (isDarkMode$ | async)
+      }"
+    >
+      <input type="checkbox" formControlName="isCompleted" class="w-4 h-4" />
+      <label class="text-sm font-semibold">{{ subtask.get("title")?.value }}</label>
+    </div>
+  </div>
+</form>
+
 
     <div class="mt-4">
       <label

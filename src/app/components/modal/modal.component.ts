@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  OnInit,
+  ChangeDetectorRef,
+} from '@angular/core';
+
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Task, Board } from '../../models/board.model';
 import { Store } from '@ngrx/store';
@@ -37,7 +45,11 @@ export class ModalComponent implements OnInit {
   selectedStatus: string = '';
   selectedTaskForEdit: Task | null = null;
 
-  constructor(private fb: FormBuilder, private store: Store<AppState>) {
+  constructor(
+    private fb: FormBuilder,
+    private store: Store<AppState>,
+    private cdr: ChangeDetectorRef
+  ) {
     this.isDarkMode$ = this.store.select((state) => state.theme.isDarkMode);
     this.subtaskForm = this.fb.group({
       subtasks: this.fb.array([]),
@@ -49,6 +61,7 @@ export class ModalComponent implements OnInit {
     if (this.task) {
       this.setSubtasks();
       this.selectedStatus = this.task.status;
+      this.cdr.detectChanges();
     }
   }
 
