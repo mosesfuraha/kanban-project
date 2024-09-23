@@ -6,6 +6,7 @@ import { ThemeState } from '../../theme/theme.reducers';
 
 import { toggleTheme } from '../../theme/theme.actions';
 import { selectAllBoardsFromStore } from '../../store/selectors/selectors';
+import { deleteBoard } from '../../store/actions/board.action';
 
 @Component({
   selector: 'app-nav-bar',
@@ -23,8 +24,11 @@ export class NavBarComponent {
   isModalOpen = false;
   isAddTaskModalOpen = false;
 
-  boards$: Observable<Board[]>;
+  isDeleteBoardModalOpen = false;
+  isEditBoardModalOpen = false;
 
+  boards$: Observable<Board[]>;
+  boardForEdit: Board | null = null;
   constructor(private store: Store<{ theme: ThemeState; boards: any }>) {
     this.isDarkMode$ = this.store.select((state) => state.theme.isDarkMode);
 
@@ -54,5 +58,28 @@ export class NavBarComponent {
 
   toggleAddTaskModal() {
     this.isAddTaskModalOpen = !this.isAddTaskModalOpen;
+  }
+
+  toggleDeleteBoardModal() {
+    this.isDeleteBoardModalOpen = !this.isDeleteBoardModalOpen;
+  }
+
+  deleteBoard() {
+    if (this.selectedBoard) {
+      this.store.dispatch(deleteBoard({ boardId: this.selectedBoard.id }));
+      this.toggleDeleteBoardModal();
+    }
+  }
+
+  openEditBoardModal() {
+    if (this.selectedBoard) {
+      this.boardForEdit = this.selectedBoard;
+      this.isEditBoardModalOpen = true;
+    }
+  }
+
+  closeEditBoardModal() {
+    this.isEditBoardModalOpen = false;
+    this.boardForEdit = null;
   }
 }

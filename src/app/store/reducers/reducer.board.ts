@@ -61,7 +61,13 @@ export const boardReducer = createReducer(
       state
     );
   }),
-
+  on(BoardActions.deleteBoard, (state, { boardId }) => {
+    return boardAdapter.removeOne(boardId, {
+      ...state,
+      activeBoardId:
+        state.activeBoardId === boardId ? null : state.activeBoardId,
+    });
+  }),
   //reducer for  editing new task
   on(BoardActions.editTask, (state, { boardId, colIndex, task }) => {
     const board = state.entities[boardId || state.activeBoardId || ''];

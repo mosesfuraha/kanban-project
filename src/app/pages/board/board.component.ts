@@ -20,14 +20,14 @@ export class BoardComponent implements OnInit {
   selectedBoard$: Observable<Board | null>;
   activeBoard: Board | null = null;
 
-  isModalOpen = false; // For Task Modal
-  isEditTaskModalOpen = false; // For Edit Task Modal
+  isModalOpen = false;
+  isEditTaskModalOpen = false;
   isBoardModalOpen = false;
   selectedTask: Task | null = null;
   selectedColIndex: number = 0;
   selectedTaskIndex: number = 0;
   selectedBoardForEdit: Board | null = null;
-  selectedTaskForEdit: Task | null = null; // Task for editing
+  selectedTaskForEdit: Task | null = null;
 
   constructor(
     private store: Store<{
@@ -66,7 +66,6 @@ export class BoardComponent implements OnInit {
     return task.subtasks ? task.subtasks.length : 0;
   }
 
-  // Open Task Modal
   openTaskModal(columnIndex: number, taskIndex: number, task: Task) {
     this.selectedTask = task;
     this.selectedColIndex = columnIndex;

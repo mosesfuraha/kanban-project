@@ -35,15 +35,17 @@ export class SideBarComponent implements OnInit {
     this.boards$.subscribe((boards) => {
       if (boards && boards.length > 0) {
         const activeBoard = this.getActiveBoardFromStore();
-        const boardToActivate = activeBoard ?? boards[0];
+        if (!activeBoard) {
+          const boardToActivate = boards[0];
 
-        this.activeItem = boardToActivate.name;
-        this.boardSelected.emit(boardToActivate);
-        this.taskService.setSelectedBoard(boardToActivate);
-        this.store.dispatch(setActiveBoard({ boardId: boardToActivate.id }));
+          this.activeItem = boardToActivate.name;
+          this.boardSelected.emit(boardToActivate);
+          this.taskService.setSelectedBoard(boardToActivate);
+          this.store.dispatch(setActiveBoard({ boardId: boardToActivate.id }));
 
-        if (boardToActivate.columns && boardToActivate.columns.length > 0) {
-          this.taskService.setSelectedColumnId(boardToActivate.columns[0].id);
+          if (boardToActivate.columns && boardToActivate.columns.length > 0) {
+            this.taskService.setSelectedColumnId(boardToActivate.columns[0].id);
+          }
         }
       }
     });
@@ -71,8 +73,6 @@ export class SideBarComponent implements OnInit {
       this.taskService.setSelectedColumnId(board.columns[0].id);
     }
 
-    console.log('Selected board ID:', board.id);
-    console.log('Selected board Name:', board.name);
     board.columns.forEach((column) => {
       console.log('Column ID:', column.id);
     });
