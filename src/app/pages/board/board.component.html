@@ -1,10 +1,10 @@
-<div class="flex space-x-16 p-4 font-sans overflow-x-auto">
+<div class="flex space-x-6 p-4 font-sans overflow-auto">
   <div
     *ngFor="
       let column of (selectedBoard$ | async)?.columns;
       let columnIndex = index
     "
-    class="w-[250px] flex-shrink-0"
+    class="w-[280px] flex-shrink-0"
   >
     <h2 class="text-[12px] font-semibold text-dark-text mb-4">
       {{ column?.name }} ({{ column?.tasks?.length || 0 }})
@@ -20,7 +20,7 @@
         (click)="openTaskModal(columnIndex, taskIndex, task)"
       >
         <p
-          class="text-sm font-semibold text-dark-tertiary hover:text-[#635FC7] w-[250px]"
+          class="text-sm font-semibold text-dark-tertiary hover:text-[#635FC7] w-[230px]"
           [ngClass]="{
             'text-dark-secondary': !(isDarkMode$ | async),
             'text-light-white': (isDarkMode$ | async)

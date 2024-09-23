@@ -47,7 +47,7 @@ export class AppComponent implements OnInit {
   }
 
   private updateSidebarVisibility(screenWidth: number) {
-    if (screenWidth < 768) {
+    if (screenWidth < 568) {
       this.isSidebarVisible = false;
     } else {
       this.isSidebarVisible = true;

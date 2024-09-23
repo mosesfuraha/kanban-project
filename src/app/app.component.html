@@ -1,5 +1,5 @@
 <div
-  class="flex h-screen font-sans transition-all duration-300"
+  class="flex min-h-screen overflow-auto font-sans transition-all duration-300"
   [ngClass]="{
     'bg-dark-secondary text-dark-text': (isDarkMode$ | async),
     'bg-light-background text-gray-800': !(isDarkMode$ | async)
@@ -7,18 +7,12 @@
 >
   <ng-container *ngIf="isSidebarVisible">
     <app-side-bar
-      class="fixed top-0 left-0 z-30 transition-all duration-300 ease-in-out h-full w-[300px]"
+      class="fixed top-[4rem] left-0 z-30 transition-all duration-300 ease-in-out h-[calc(100%-4rem)] lg:w-[300px]"
       (boardSelected)="onBoardSelected($event)"
     ></app-side-bar>
   </ng-container>
 
-  <div
-    class="flex flex-1 flex-col transition-all duration-300"
-    [ngClass]="{
-      'ml-0': !isSidebarVisible,
-      'ml-[300px]': isSidebarVisible
-    }"
-  >
+  <div class="flex flex-1 flex-col transition-all duration-300">
     <app-nav-bar
       class="fixed top-0 z-10 w-full"
       (boardSelected)="onBoardSelected($event)"
@@ -30,20 +24,21 @@
     ></app-nav-bar>
 
     <div
-      class="pt-24"
+      class="pt-24 pl-0 transition-all duration-300"
       [ngClass]="{
-        'bg-dark-secondary text-dark-text': (isDarkMode$ | async),
-        'bg-light-background text-gray-800': !(isDarkMode$ | async)
+        'ml-0': !isSidebarVisible,
+        'ml-[300px]': isSidebarVisible
       }"
     >
-      <div class="min-w-full no-scrollbar">
-        <app-board ></app-board>
+      <div class="min-w-full no-scrollbar overflow-x-auto">
+        <app-board></app-board>
       </div>
     </div>
   </div>
 
+  <!-- Toggle button -->
   <button
-    class="fixed bottom-0 left-0 flex items-center justify-center cursor-pointer p-3 rounded-tr-full rounded-br-full transition-all duration-300 ease-in-out z-50 bg-[#635FC7]"
+    class="fixed bottom-0 left-0 flex items-center justify-center cursor-pointer p-3 rounded-tr-full rounded-br-full transition-all duration-300 ease-in-out z-50 bg-[#635FC7] max-sm:hidden"
     (click)="toggleSidebar()"
     [ngClass]="{
       'bg-[#635FC7]': !isSidebarVisible
