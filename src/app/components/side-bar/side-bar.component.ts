@@ -33,21 +33,18 @@ export class SideBarComponent implements OnInit {
 
   ngOnInit(): void {
     this.boards$.subscribe((boards) => {
-      if (boards && boards.length > 0) {
-        const activeBoard = this.getActiveBoardFromStore();
-        if (!activeBoard) {
-          const boardToActivate = boards[0];
+      // if (boards.length > 0) {
+      //   const activeBoard = this.getActiveBoardFromStore();
 
-          this.activeItem = boardToActivate.name;
-          this.boardSelected.emit(boardToActivate);
-          this.taskService.setSelectedBoard(boardToActivate);
-          this.store.dispatch(setActiveBoard({ boardId: boardToActivate.id }));
-
-          if (boardToActivate.columns && boardToActivate.columns.length > 0) {
-            this.taskService.setSelectedColumnId(boardToActivate.columns[0].id);
-          }
-        }
-      }
+      //   if (!activeBoard) {
+      //     const boardToActivate = boards[0];
+      //     this.activeItem = boardToActivate.name;
+      //     this.boardSelected.emit(boardToActivate);
+      //     if (boardToActivate.columns.length > 0) {
+      //       this.taskService.setSelectedColumnId(boardToActivate.columns[0].id);
+      //     }
+      //   }
+      // }
     });
   }
 
@@ -63,19 +60,17 @@ export class SideBarComponent implements OnInit {
   }
 
   setActive(board: Board): void {
+    // Set the active board only when a user manually selects a board
     this.activeItem = board.name;
     this.boardSelected.emit(board);
 
+    // Update the active board state
     this.taskService.setSelectedBoard(board);
     this.store.dispatch(setActiveBoard({ boardId: board.id }));
 
     if (board.columns.length > 0) {
       this.taskService.setSelectedColumnId(board.columns[0].id);
     }
-
-    board.columns.forEach((column) => {
-      console.log('Column ID:', column.id);
-    });
   }
 
   selectColumn(columnId: string): void {

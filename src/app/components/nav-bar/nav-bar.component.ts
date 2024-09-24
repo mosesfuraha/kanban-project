@@ -5,7 +5,10 @@ import { Board } from '../../models/board.model';
 import { ThemeState } from '../../theme/theme.reducers';
 
 import { toggleTheme } from '../../theme/theme.actions';
-import { selectAllBoardsFromStore } from '../../store/selectors/selectors';
+import {
+  selectActiveBoard,
+  selectAllBoardsFromStore,
+} from '../../store/selectors/selectors';
 import { deleteBoard } from '../../store/actions/board.action';
 
 @Component({
@@ -26,6 +29,7 @@ export class NavBarComponent {
 
   isDeleteBoardModalOpen = false;
   isEditBoardModalOpen = false;
+  selectedBoard$: Observable<Board | null>;
 
   boards$: Observable<Board[]>;
   boardForEdit: Board | null = null;
@@ -33,6 +37,7 @@ export class NavBarComponent {
     this.isDarkMode$ = this.store.select((state) => state.theme.isDarkMode);
 
     this.boards$ = this.store.select(selectAllBoardsFromStore);
+    this.selectedBoard$ = this.store.select(selectActiveBoard);
   }
 
   toggleDropdown() {
@@ -40,6 +45,7 @@ export class NavBarComponent {
   }
 
   navigateTo(board: Board) {
+    this.selectedBoard = board;
     this.boardSelected.emit(board);
     this.isDropdownOpen = false;
   }

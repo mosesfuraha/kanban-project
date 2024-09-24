@@ -43,12 +43,13 @@ export class BoardComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(BoardActions.loadBoards());
 
+    // Subscribe to the selected board (active board)
     this.selectedBoard$.subscribe((board) => {
       this.activeBoard = board;
     });
 
     this.boards$.subscribe((boards) => {
-      if (boards.length > 0) {
+      if (boards.length > 0 && !this.activeBoard) {
         this.store.dispatch(
           BoardActions.setActiveBoard({ boardId: boards[0].id })
         );
@@ -70,24 +71,21 @@ export class BoardComponent implements OnInit {
     this.selectedTask = task;
     this.selectedColIndex = columnIndex;
     this.selectedTaskIndex = taskIndex;
-    this.isModalOpen = true; // Show task modal
-    this.isEditTaskModalOpen = false; // Ensure edit modal is closed
+    this.isModalOpen = true;
+    this.isEditTaskModalOpen = false;
   }
 
-  // Open Edit Task Modal
   openEditTaskModal(task: Task) {
     this.selectedTaskForEdit = task;
-    this.isEditTaskModalOpen = true; // Show edit task modal
-    this.isModalOpen = false; // Close task modal
+    this.isEditTaskModalOpen = true;
+    this.isModalOpen = false;
   }
 
-  // Close Task Modal
   closeModal() {
     this.isModalOpen = false;
     this.selectedTask = null;
   }
 
-  // Close Edit Task Modal
   closeEditTaskModal() {
     this.isEditTaskModalOpen = false;
     this.selectedTaskForEdit = null;

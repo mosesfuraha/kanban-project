@@ -17,8 +17,13 @@ export const boardReducer = createReducer(
   initialBoardState,
 
   on(BoardActions.loadBoardsSuccess, (state, { boards }) => {
-    return boardAdapter.setAll(boards, state);
+    const activeBoardId = state.activeBoardId ?? boards[0]?.id;
+    return boardAdapter.setAll(boards, {
+      ...state,
+      activeBoardId, 
+    });
   }),
+
   on(BoardActions.addBoard, (state, { board }) => {
     return boardAdapter.addOne(board, state);
   }),
