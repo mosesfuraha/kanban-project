@@ -43,7 +43,7 @@ export class SideBarComponent implements OnInit {
   }
   ngOnInit(): void {
     this.boards$.pipe(take(1)).subscribe((boards) => {
-      const boardToActivate = boards[0]; // Directly set the first board
+      const boardToActivate = boards[0];
       this.activeItem = boardToActivate.name;
       this.boardSelected.emit(boardToActivate);
 
@@ -54,11 +54,9 @@ export class SideBarComponent implements OnInit {
   }
 
   setActive(board: Board): void {
-    // Set the active board only when a user manually selects a board
     this.activeItem = board.name;
     this.boardSelected.emit(board);
 
-    // Update the active board state
     this.taskService.setSelectedBoard(board);
     this.store.dispatch(setActiveBoard({ boardId: board.id }));
 
