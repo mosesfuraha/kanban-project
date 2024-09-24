@@ -13,7 +13,7 @@ import { setActiveBoard } from '../../store/actions/board.action';
   templateUrl: './side-bar.component.html',
   styleUrls: ['./side-bar.component.css'],
 })
-export class SideBarComponent implements OnInit {
+export class SideBarComponent {
   activeItem: string = '';
   isSidebarCollapsed: boolean = false;
   isDarkMode$: Observable<boolean>;
@@ -29,23 +29,6 @@ export class SideBarComponent implements OnInit {
   ) {
     this.isDarkMode$ = this.store.select((state) => state.theme.isDarkMode);
     this.boards$ = this.store.select(selectAllBoardsFromStore);
-  }
-
-  ngOnInit(): void {
-    this.boards$.subscribe((boards) => {
-      // if (boards.length > 0) {
-      //   const activeBoard = this.getActiveBoardFromStore();
-
-      //   if (!activeBoard) {
-      //     const boardToActivate = boards[0];
-      //     this.activeItem = boardToActivate.name;
-      //     this.boardSelected.emit(boardToActivate);
-      //     if (boardToActivate.columns.length > 0) {
-      //       this.taskService.setSelectedColumnId(boardToActivate.columns[0].id);
-      //     }
-      //   }
-      // }
-    });
   }
 
   getActiveBoardFromStore(): Board | null {
