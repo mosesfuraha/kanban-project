@@ -25,8 +25,8 @@ describe('BoardComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [BoardComponent],
-      providers: [{ provide: Store, useValue: mockStore }],
       imports: [HttpClientTestingModule],
+      providers: [{ provide: Store, useValue: mockStore }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(BoardComponent);
@@ -38,14 +38,18 @@ describe('BoardComponent', () => {
   });
 
   it('should subscribe to store and load boards on init', () => {
-    const mockBoards = [mockBoard];
+    // const mockBoards = [mockBoard];
+    const mockBoard = { id: '1', name: 'Test Board', columns: [] };
 
     mockStore.select.mockImplementation((selector: any) => {
       if (selector === 'theme.isDarkMode') {
         return of(false);
       }
       if (selector === 'boards') {
-        return of(mockBoards);
+        return of(mockBoard);
+      }
+      if (selector === 'selectedBoard') {
+        return of(mockBoard);
       }
       return of(null);
     });
@@ -56,6 +60,9 @@ describe('BoardComponent', () => {
     expect(mockStore.dispatch).toHaveBeenCalledWith(
       BoardActions.setActiveBoard({ boardId: '1' })
     );
+
+    // Ensure the activeBoard is set correctly
+    expect(component.activeBoard).toEqual(mockBoard);
   });
 
   it('should open task modal with correct parameters', () => {
@@ -64,7 +71,7 @@ describe('BoardComponent', () => {
       title: 'Test Task',
       description: '',
       subtasks: [],
-      status: 'In Progress',
+      status: 'ToDo',
     };
 
     component.openTaskModal(1, 2, task);
@@ -99,10 +106,8 @@ describe('BoardComponent', () => {
       id: '3',
       title: 'Task with Subtask',
       description: '',
-      subtasks: [
-        { id: 'subtask1', title: 'Subtask 1', isCompleted: false }, // Add the 'title' property
-      ],
-      status: 'Not Started',
+      subtasks: [{ id: 'subtask1', title: 'Subtask 1', isCompleted: false }],
+      status: '',
     };
 
     const event = {

@@ -12,23 +12,30 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 
 ## Key Features
 
-- **Kanban Board Structure**: The application provides a structured Kanban board system where users can create and manage boards with multiple columns and tasks within those columns.
-- **Task Management**:
-  - Create and edit tasks within each column.
-  - Subtask management: add, edit, and remove subtasks to keep track of task progress.
-  - Assign tasks to specific columns and update task statuses dynamically.
-- **Dark Mode**: Users can toggle between light and dark mode for a more comfortable viewing experience.
+- **Kanban Board Structure**: Create and manage multiple boards with customizable columns for efficient task organization.
 
-- **Responsive Design**: The Kanban board is fully responsive, providing a seamless experience on different screen sizes.
+- **Comprehensive Task Management**:
+  - Create, edit, and organize tasks within columns.
+  - Subtask functionality: Add, edit, and remove subtasks to track granular progress.
+  - Dynamic task assignment: Move tasks between columns to update their status.
 
-## In Progress Features
+- **Dark Mode**: Toggle between light and dark themes for personalized visual comfort.
 
-- **Delete Tasks**: The ability to delete tasks is currently being worked on and will be available soon.
-- **Delete Boards**: Users will also soon be able to delete entire boards along with all associated columns and tasks.
-- **Testing**: Unit tests for task and board features are still being written and will be completed today.
+- **Responsive Design**: Fully adaptive layout ensures a seamless experience across various devices and screen sizes.
 
-## Remaining Tasks
+- **Unit Testing**: Comprehensive unit tests for task and board features ensure reliability and maintainability.
 
-- Complete the unit tests for task and board features by today.
-- Implement task and board deletion functionalities by today.
-- Finish all remaining features by today.
+## Getting Started
+
+1. Clone the repository
+2. Run `npm install` to install dependencies
+3. Use `ng serve` to start the development server
+4. Navigate to `http://localhost:4200/` in your browser
+
+## Testing
+
+Run `npm test` to execute the unit tests via Jest. Our test suite covers core functionality for tasks and boards, ensuring a stable application.
+
+## Contributing
+
+We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines on how to submit pull requests and report issues.

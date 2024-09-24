@@ -43,7 +43,6 @@ export class BoardComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(BoardActions.loadBoards());
 
-    // Subscribe to the selected board (active board)
     this.selectedBoard$.subscribe((board) => {
       this.activeBoard = board;
     });
