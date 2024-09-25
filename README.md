@@ -34,7 +34,7 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 
 ## Testing
 
-Run `npm test` to execute the unit tests via Jest. Our test suite covers core functionality for tasks and boards, ensuring a stable application.
+Run `npm test` to execute the unit tests via Jest. Our test suite covers core functionality for tasks and boards, ensuring a stable application and total converage is 68.92%.
 
 ## Contributing
 
